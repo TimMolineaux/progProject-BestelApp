@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8" />
+    <title>Mijn Bestellingen</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+    <style>
+        :root {
+            --aquafin-blauw: #0077c8;
+            --aquafin-blauw-donker: #005fa3;
+        }
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+        }
+        .navbar {
+            background-color: white !important;
+            border-bottom: 1px solid #ddd;
+        }
+        .navbar-brand img {
+            height: 40px;
+        }
+        .nav-link {
+            color: var(--aquafin-blauw) !important;
+            font-weight: 500;
+        }
+        .nav-link:hover,
+        .nav-link:focus {
+            color: var(--aquafin-blauw-donker) !important;
+        }
+        h1 {
+            color: var(--aquafin-blauw);
+            font-weight: 700;
+            margin-top: 1rem;
+            margin-bottom: 2rem;
+        }
+        .table thead {
+            background-color: var(--aquafin-blauw);
+            color: white;
+        }
+        .table-striped > tbody > tr:nth-of-type(odd) {
+            background-color: #e9f3fb;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <img src="/images/aquafin-logo.png" alt="Aquafin" height="40">
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+
+                <!-- Winkelmandje dropdown is verwijderd -->
+
+                <!-- User dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="javascript:void(0)" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        User
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item active" href="/bestellingen">Bestellingen</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/logout">Uitloggen</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <h1>Mijn Bestellingen</h1>
+
+    <!-- Voorbeeld als er geen bestellingen zijn -->
+    <div class="alert alert-info" role="alert">
+        Je hebt nog geen bestellingen geplaatst.
+    </div>
+
+    <!--
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Bestelling ID</th>
+                <th>Productnaam</th>
+                <th>Aantal</th>
+                <th>Datum</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Productnaam 1</td>
+                <td>2</td>
+                <td>13-06-2025</td>
+                <td>In behandeling</td>
+            </tr>
+            <!-- Meer rijen hier -->
+    </tbody>
+    </table>
+    -->
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
