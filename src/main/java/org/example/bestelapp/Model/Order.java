@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "orders")//tabel hernoemen anders geeft sql fouten omdat order al een gereserveerd keyword is
 public class Order {
 
     @Id
