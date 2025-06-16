@@ -1,4 +1,4 @@
-package org.example.bestelapp.controller;
+package org.example.bestelapp.Controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class BestellingenController {
 
     @GetMapping("/bestellingen")
-    public String bestellingen() {
-        return "bestellingen"; // verwijst naar bestellingen.html in /templates
+    public String getBestellingen() {
+        // Geeft de naam van je Thymeleaf-template terug (bestellingen.html zonder extensie)
+        return "bestellingen";
     }
 }
