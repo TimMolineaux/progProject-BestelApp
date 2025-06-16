@@ -52,28 +52,67 @@
             <h2>Populaire producten</h2>
         </div>
         <div class="col-md-6 text-end">
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Zoek product..." aria-label="Zoeken">
+            <form class="d-flex" role="search" id="searchForm">
+                <input class="form-control me-2" type="search" id="searchInput" placeholder="Zoek product..." aria-label="Zoeken">
                 <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
             </form>
         </div>
     </div>
     <hr>
 
-    <div class="row">
-        <div class="col-md-4">
-            <div class="product-card">
-
-                <h5>Productnaam 1</h5>
-                <img src="/images/product1.png" alt="Product 1" class="img-fluid">
-                <p>Korte beschrijving van product 1.</p>
-                <p><strong>In stock:</strong> 12</p>
-                <input type="number" class="form-control mb-2" min="1" value="1">
-                <button class="btn btn-primary">Toevoegen</button>
-            </div>
-        </div>
+    <!-- Producten worden hier geladen door JavaScript -->
+    <div id="productsContainer" class="row">
+        <!-- Dynamisch geladen producten verschijnen hier -->
     </div>
 </div>
+
+<script>
+    // Functie om producten op te halen via de API en deze weer te geven
+    async function fetchProducts(searchTerm = '') {
+        try {
+            const url = searchTerm ? `/api/products?search=${searchTerm}` : '/api/products'; // Voeg zoekterm toe aan de URL
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const products = await response.json();
+
+            // Verwijder de bestaande producten (indien aanwezig)
+            const productsContainer = document.getElementById('productsContainer');
+            productsContainer.innerHTML = '';
+
+            // Voeg de producten toe aan de pagina
+            products.forEach(product => {
+                const productCard = `
+                    <div class="col-md-4">
+                        <div class="product-card">
+                            <h5>${product.name}</h5>
+                            <img src="${product.image || '/path/to/default-image.jpg'}" alt="${product.name}" class="img-fluid">
+                            <p>${product.description || 'Geen beschrijving beschikbaar'}</p>
+                            <p><strong>In stock:</strong> ${product.stock}</p>
+                            <input type="number" class="form-control mb-2" min="1" value="1">
+                            <button class="btn btn-primary">Toevoegen</button>
+                        </div>
+                    </div>
+                `;
+                productsContainer.innerHTML += productCard;
+            });
+        } catch (error) {
+            console.error('Er is een fout opgetreden bij het ophalen van de producten:', error);
+        }
+    }
+
+    // Roep de functie aan om de producten te laden zodra de pagina is geladen
+    window.onload = () => fetchProducts();
+
+    // Voeg event listener toe aan de zoekbalk
+    const searchForm = document.getElementById('searchForm');
+    searchForm.addEventListener('submit', (event) => {
+        event.preventDefault();  // Voorkom het standaard gedrag van de zoekbalk
+        const searchTerm = document.getElementById('searchInput').value;
+        fetchProducts(searchTerm);  // Roep de fetchProducts functie aan met de zoekterm
+    });
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
