@@ -1,7 +1,7 @@
 package org.example.bestelapp.Controller;
 
 import org.example.bestelapp.Model.Category;
-import org.example.bestelapp.Model.CategoryDAO;
+import org.example.bestelapp.Repository.CategoryDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

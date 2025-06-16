@@ -1,7 +1,7 @@
 package org.example.bestelapp.Controller;
 
 import org.example.bestelapp.Model.Role;
-import org.example.bestelapp.Model.RoleDAO;
+import org.example.bestelapp.Repository.RoleDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

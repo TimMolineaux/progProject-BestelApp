@@ -1,7 +1,7 @@
 package org.example.bestelapp.Controller;
 
 import org.example.bestelapp.Model.User;
-import org.example.bestelapp.Model.UserDAO;
+import org.example.bestelapp.Repository.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,6 +1,9 @@
 package org.example.bestelapp;
 
 import org.example.bestelapp.Model.*;
+import org.example.bestelapp.Repository.CategoryDAO;
+import org.example.bestelapp.Repository.RoleDAO;
+import org.example.bestelapp.Repository.UserDAO;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
