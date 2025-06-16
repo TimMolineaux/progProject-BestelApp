@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Bestellingen</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="topbar">
+  <img src="https://www.aquafin.be/themes/custom/aquafin/logo.svg" alt="Logo" class="logo">
+  <div class="nav-buttons">
+    <button onclick="location.href='/productbeheer'">Productbeheer</button>
+    <button onclick="location.href='/terug'">Terug</button>
+    <button onclick="location.href='/admin'">Admin</button>
+    <button onclick="location.href='/login.html'">User</button>
+  </div>
+</header>
+
+<h1 class="title">Bestellingen</h1>
+
+<div class="orders-grid">
+  <!-- Herhaal deze div voor elke bestelling -->
+  <div class="order-card">
+    <div class="order-header">
+      <span>Order ID: 2</span>
+      <span>11/06/2025</span>
+    </div>
+    <table>
+      <tr><th>Product</th><th>Aantal</th></tr>
+      <tr><td>Oordoppen</td><td>4</td></tr>
+      <tr><td>Stofmaskers</td><td>2</td></tr>
+    </table>
+    <div class="order-actions">
+      <button onclick="alert('Order voltooid')">Voltooien</button>
+      <button class="delete-btn" onclick="alert('Verwijderd')">🗑</button>
+    </div>
+  </div>
+  <!-- herhaal dit blokje met Thymeleaf als je data vanuit Java laadt -->
+</div>
+</body>
+</html>

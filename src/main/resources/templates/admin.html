@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Beheer</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<header class="topbar">
+    <img src="https://www.aquafin.be/themes/custom/aquafin/logo.svg" alt="Logo" class="logo">
+    <div class="nav-buttons">
+        <button onclick="location.href='/productbeheer'">Productbeheer</button>
+        <button onclick="location.href='/bestellingen'">Bestellingsbeheer</button>
+        <button onclick="history.back()">Terug</button>
+        <button onclick="location.href='/login'">User</button>
+    </div>
+</header>
+
+<main style="display: flex; justify-content: space-around; margin-top: 50px;">
+    <!-- Gebruikerslijst -->
+    <section>
+        <h2 style="color: lightcoral;">Gebruikers Beheer</h2>
+        <div th:each="user : ${gebruikers}">
+            <span th:text="${user.naam}">User X</span>
+            Rol: <input type="text" th:value="${user.rol}" readonly>
+            <button>🗑️</button>
+            <br><br>
+        </div>
+    </section>
+
+    <!-- Gebruiker toevoegen -->
+    <section>
+        <h2 style="color: lightcoral;">Gebruikers aanmaken</h2>
+        <form method="post" action="/admin/toevoegen">
+            E-Mail:<br>
+            <input type="email" name="email"><br><br>
+            Wachtwoord:<br>
+            <input type="password" name="wachtwoord"><br><br>
+            <button type="submit" style="background-color: #aaa;">Toevoegen</button>
+        </form>
+    </section>
+</main>
+</body>
+</html>

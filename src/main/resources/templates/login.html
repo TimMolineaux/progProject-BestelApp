@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Aquafin Login</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+  <img src="https://www.aquafin.be/themes/custom/aquafin/logo.svg" alt="Aquafin Logo" class="logo">
+  <div class="login-box">
+    <h2>LOG IN</h2>
+    <form method="post" th:action="@{/login}">
+      <input type="text" name="username" placeholder="Gebruikersnaam..." required><br>
+      <input type="password" name="password" placeholder="Wachtwoord..." required><br>
+      <a href="/forgot-password" class="forgot">Wachtwoord vergeten?</a><br>
+      <button type="submit">Inloggen</button>
+    </form>
+  </div>
+</div>
+</body>
+</html>
