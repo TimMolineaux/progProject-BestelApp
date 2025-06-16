@@ -1,9 +1,6 @@
 package org.example.bestelapp;
 
-import org.example.bestelapp.Model.Role;
-import org.example.bestelapp.Model.RoleDAO;
-import org.example.bestelapp.Model.User;
-import org.example.bestelapp.Model.UserDAO;
+import org.example.bestelapp.Model.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +11,7 @@ import java.util.Optional;
 public class DataSeeder {
 
     @Bean
-    CommandLineRunner initRoles(RoleDAO roleDAO, UserDAO userDAO) {
+    CommandLineRunner initRoles(RoleDAO roleDAO, UserDAO userDAO, CategoryDAO categoryDAO) {
         return args -> {
             if (roleDAO.count() == 0){
                 roleDAO.save(new Role(0, "admin"));
@@ -33,6 +30,14 @@ public class DataSeeder {
 
                     userDAO.save(admin);
                 }
+            }
+            if (categoryDAO.count() == 0){
+                categoryDAO.save(new Category(0, "Bevestigingsmateriaal"));
+                categoryDAO.save(new Category(0, "Persoonlijke beschermingsmiddelen"));
+                categoryDAO.save(new Category(0, "Gereedschap"));
+                categoryDAO.save(new Category(0, "Technische onderhoudsmaterialen"));
+                categoryDAO.save(new Category(0, "Specifieke Aquafin / riolering gerelateerde tools"));
+                categoryDAO.save(new Category(0, "Diversen / Verbruiksgoederen"));
             }
         };
     }
