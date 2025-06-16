@@ -16,14 +16,40 @@ public class ProductController {
     @Autowired
     private ProductDAO productDAO;
 
-    // Haal producten op, met een zoekterm indien beschikbaar
+    // Haal producten op, met optionele zoekterm en popular filter
     @GetMapping
-    public List<Product> getProducts(@RequestParam(value = "search", required = false) String search) {
-        if (search != null && !search.isEmpty()) {
-            return productDAO.findByNameContainingIgnoreCase(search); // Zoek op naam
+    public List<Product> getProducts(
+            @RequestParam(value = "search", required = false) String search,
+            @RequestParam(value = "popular", required = false) Boolean popular
+    ) {
+        if (popular != null) {
+            if (search != null && !search.isEmpty()) {
+                if (popular) {
+                    return productDAO.findByNameContainingIgnoreCaseAndPopularTrue(search);
+                } else {
+                    return productDAO.findByNameContainingIgnoreCaseAndPopularFalse(search);
+                }
+            } else {
+                if (popular) {
+                    return productDAO.findByPopularTrue();
+                } else {
+                    return productDAO.findByPopularFalse();
+                }
+            }
         } else {
-            return productDAO.findAll(); // Haal alle producten op
+            // Geen popular filter, haal alle producten
+            if (search != null && !search.isEmpty()) {
+                return productDAO.findByNameContainingIgnoreCase(search);
+            } else {
+                return productDAO.findAll();
+            }
         }
+    }
+
+    // Debug endpoint: alle producten met popular status
+    @GetMapping("/all")
+    public List<Product> getAllProducts() {
+        return productDAO.findAll();
     }
 
     // Haal product op via ID

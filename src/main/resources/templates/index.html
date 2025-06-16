@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Homepagina</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
     <style>
         :root {
             --aquafin-blauw: #0077c8;
@@ -37,12 +36,61 @@
             max-width: 80px;
             margin: auto;
         }
+        .dropdown-menu.cart-dropdown {
+            min-width: 300px;
+            padding: 1rem;
+        }
+        .cart-actions {
+            font-size: 0.9rem;
+        }
+        .remove-btn {
+            color: red;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
-<!-- Voeg de navigatiebalk toe via het fragment -->
-<div th:replace="fragments/navbar :: navbar"></div>
+<nav class="navbar navbar-expand-lg bg-white border-bottom">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <img src="/images/aquafin-logo.png" alt="Aquafin" height="40" />
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link active" href="/">Home</a></li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="cartDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-cart"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end cart-dropdown" aria-labelledby="cartDropdown">
+                        <div class="cart-header d-flex justify-content-between align-items-center fw-bold mb-3">
+                            <span>Winkelmandje</span>
+                            <button type="button" class="btn-close" data-bs-toggle="dropdown" aria-label="Sluiten"></button>
+                        </div>
+                        <table class="table cart-table mb-2">
+                            <thead>
+                            <tr><th>Product</th><th>Aantal</th><th></th></tr>
+                            </thead>
+                            <tbody><!-- Dynamisch via JS --></tbody>
+                        </table>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">User</a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" href="bestellingen.html">Bestellingen</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="/logout">Uitloggen</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
 <div class="container mt-4">
     <h1>Welkom op de Homepagina!</h1>
@@ -53,64 +101,175 @@
         </div>
         <div class="col-md-6 text-end">
             <form class="d-flex" role="search" id="searchForm">
-                <input class="form-control me-2" type="search" id="searchInput" placeholder="Zoek product..." aria-label="Zoeken">
+                <input class="form-control me-2" type="search" id="searchInput" placeholder="Zoek product..." aria-label="Zoeken" />
                 <button class="btn btn-outline-primary" type="submit"><i class="bi bi-search"></i></button>
             </form>
         </div>
     </div>
     <hr>
+    <div id="popularProductsContainer" class="row"></div>
 
-    <!-- Producten worden hier geladen door JavaScript -->
-    <div id="productsContainer" class="row">
-        <!-- Dynamisch geladen producten verschijnen hier -->
+    <div class="row align-items-center mt-5 mb-3">
+        <div class="col-md-6">
+            <h2>Andere producten</h2>
+        </div>
     </div>
+    <hr>
+    <div id="otherProductsContainer" class="row"></div>
 </div>
 
 <script>
-    // Functie om producten op te halen via de API en deze weer te geven
-    async function fetchProducts(searchTerm = '') {
+    async function fetchPopularProducts(searchTerm = '') {
         try {
-            const url = searchTerm ? `/api/products?search=${searchTerm}` : '/api/products'; // Voeg zoekterm toe aan de URL
+            const url = searchTerm
+                ? `/api/products?search=${encodeURIComponent(searchTerm)}&popular=true`
+                : '/api/products?popular=true';
+
             const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
             const products = await response.json();
+            const container = document.getElementById('popularProductsContainer');
+            container.innerHTML = '';
 
-            // Verwijder de bestaande producten (indien aanwezig)
-            const productsContainer = document.getElementById('productsContainer');
-            productsContainer.innerHTML = '';
-
-            // Voeg de producten toe aan de pagina
             products.forEach(product => {
-                const productCard = `
-                    <div class="col-md-4">
-                        <div class="product-card">
-                            <h5>${product.name}</h5>
-                            <img src="${product.image || '/path/to/default-image.jpg'}" alt="${product.name}" class="img-fluid">
-                            <p>${product.description || 'Geen beschrijving beschikbaar'}</p>
-                            <p><strong>In stock:</strong> ${product.stock}</p>
-                            <input type="number" class="form-control mb-2" min="1" value="1">
-                            <button class="btn btn-primary">Toevoegen</button>
-                        </div>
-                    </div>
-                `;
-                productsContainer.innerHTML += productCard;
+                container.innerHTML += createProductCard(product);
             });
-        } catch (error) {
-            console.error('Er is een fout opgetreden bij het ophalen van de producten:', error);
+
+            setupAddToCartButtons(container);
+        } catch (err) {
+            console.error('Fout bij ophalen populaire producten:', err);
         }
     }
 
-    // Roep de functie aan om de producten te laden zodra de pagina is geladen
-    window.onload = () => fetchProducts();
+    async function fetchOtherProducts(searchTerm = '') {
+        try {
+            const url = searchTerm
+                ? `/api/products?search=${encodeURIComponent(searchTerm)}&popular=false`
+                : '/api/products?popular=false';
 
-    // Voeg event listener toe aan de zoekbalk
-    const searchForm = document.getElementById('searchForm');
-    searchForm.addEventListener('submit', (event) => {
-        event.preventDefault();  // Voorkom het standaard gedrag van de zoekbalk
-        const searchTerm = document.getElementById('searchInput').value;
-        fetchProducts(searchTerm);  // Roep de fetchProducts functie aan met de zoekterm
+            const response = await fetch(url);
+            const products = await response.json();
+            const container = document.getElementById('otherProductsContainer');
+            container.innerHTML = '';
+
+            products.forEach(product => {
+                container.innerHTML += createProductCard(product);
+            });
+
+            setupAddToCartButtons(container);
+        } catch (err) {
+            console.error('Fout bij ophalen andere producten:', err);
+        }
+    }
+
+    function createProductCard(product) {
+        return `
+            <div class="col-md-4">
+                <div class="product-card">
+                    <h5>${product.name}</h5>
+                    <img src="${product.image || '/path/to/default-image.jpg'}" alt="${product.name}" class="img-fluid" />
+                    <p>${product.description || 'Geen beschrijving beschikbaar'}</p>
+                    <p><strong>In stock:</strong> ${product.stock}</p>
+                    <input type="number" class="form-control mb-2" min="1" value="1" />
+                    <button class="btn btn-primary add-to-cart-btn" data-product='${JSON.stringify(product)}'>Toevoegen</button>
+                </div>
+            </div>
+        `;
+    }
+
+    function setupAddToCartButtons(container) {
+        container.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const product = JSON.parse(btn.getAttribute('data-product'));
+                const quantity = parseInt(btn.previousElementSibling.value);
+                addToCart(product.name, quantity);
+            });
+        });
+    }
+
+    function getCart() {
+        return JSON.parse(localStorage.getItem('cart')) || [];
+    }
+
+    function saveCart(cart) {
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartDropdown();
+    }
+
+    function addToCart(name, quantity) {
+        const cart = getCart();
+        const existing = cart.find(item => item.name === name);
+        if (existing) {
+            existing.quantity += quantity;
+        } else {
+            cart.push({ name, quantity });
+        }
+        saveCart(cart);
+    }
+
+    function updateCartDropdown() {
+        const cart = getCart();
+        const tbody = document.querySelector('.cart-table tbody');
+        const dropdown = document.querySelector('.cart-dropdown');
+        const dropdownToggle = document.getElementById('cartDropdown');
+        const dropdownInstance = bootstrap.Dropdown.getOrCreateInstance(dropdownToggle);
+
+        tbody.innerHTML = '';
+        dropdown.querySelectorAll('.cart-actions, .btn-bestel').forEach(el => el.remove());
+
+        if (cart.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="3">Geen producten in winkelmandje</td></tr>';
+        } else {
+            cart.forEach((item, i) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${item.name}</td>
+                        <td>${item.quantity}</td>
+                        <td><i class="bi bi-x-circle remove-btn" data-index="${i}" title="Verwijderen"></i></td>
+                    </tr>
+                `;
+            });
+
+            dropdown.insertAdjacentHTML('beforeend', `
+                <div class="cart-actions mt-2 d-flex justify-content-between align-items-center">
+                    <small><strong>Totaal:</strong> ${cart.reduce((a, b) => a + b.quantity, 0)} item(s)</small>
+                    <button class="btn btn-sm btn-outline-danger" id="clearCartBtn">Leegmaken</button>
+                </div>
+                <button class="btn btn-primary btn-bestel w-100 mt-2">Bestellen</button>
+            `);
+        }
+
+        document.querySelectorAll('.remove-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const index = parseInt(btn.getAttribute('data-index'));
+                const cart = getCart();
+                cart.splice(index, 1);
+                saveCart(cart);
+                dropdownInstance.show();
+            });
+        });
+
+        const clearBtn = document.getElementById('clearCartBtn');
+        if (clearBtn) {
+            clearBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.removeItem('cart');
+                updateCartDropdown();
+                dropdownInstance.show();
+            });
+        }
+    }
+
+    window.onload = () => {
+        fetchPopularProducts();
+        fetchOtherProducts();
+        updateCartDropdown();
+    };
+
+    document.getElementById('searchForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const term = document.getElementById('searchInput').value;
+        fetchPopularProducts(term);
+        fetchOtherProducts(term);
     });
 </script>
 

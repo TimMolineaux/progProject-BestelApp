@@ -6,7 +6,13 @@ import java.util.List;
 
 public interface ProductDAO extends JpaRepository<Product, Integer> {
 
-    // Zoek producten op naam (case-insensitive)
     List<Product> findByNameContainingIgnoreCase(String name);
 
+    List<Product> findByPopularTrue();
+
+    List<Product> findByPopularFalse();
+
+    List<Product> findByNameContainingIgnoreCaseAndPopularTrue(String name);
+
+    List<Product> findByNameContainingIgnoreCaseAndPopularFalse(String name);
 }
