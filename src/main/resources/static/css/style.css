@@ -1,75 +1,113 @@
-:root {
-    --aquafin-blauw: #0077c8;
-    --aquafin-blauw-donker: #005fa3;
+/* Verberg checkboxen */
+.nav-toggle, .cart-toggle, .user-toggle {
+    display: none;
 }
 
-body {
-    background-color: #f8f9fa;
-    color: #333;
-}
-
-h1, h2 {
-    color: var(--aquafin-blauw);
-    font-weight: 700;
-}
-
-.product-card {
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 0.5rem;
-    padding: 1rem;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    margin-bottom: 2rem;
-    text-align: center;
-}
-
-.product-card img {
-    max-height: 150px;
-    object-fit: contain;
-    margin-bottom: 1rem;
-}
-
-.product-card input[type="number"] {
-    max-width: 80px;
-    margin: auto;
-}
-
-.dropdown-menu.cart-dropdown {
-    min-width: 300px;
-    padding: 1rem;
-}
-
-.cart-actions {
-    font-size: 0.9rem;
-}
-
-.remove-btn {
-    color: red;
+/* Hamburger icoon als label */
+.nav-toggle-label {
+    display: none; /* standaard verbergen */
     cursor: pointer;
+    width: 30px;
+    height: 25px;
+    position: relative;
 }
 
-/* Navbar specifieke styling */
-.logo {
-    height: 40px;
-}
-
-.custom-navbar {
-    background-color: white;
-    border-bottom: 1px solid #dee2e6;
-}
-
-.cart-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: bold;
-    margin-bottom: 1rem;
-}
-
-.cart-table {
-    margin-bottom: 1rem;
-}
-
-.btn-bestel {
+.nav-toggle-label span,
+.nav-toggle-label span::before,
+.nav-toggle-label span::after {
+    display: block;
+    background: var(--aquafin-blauw);
+    height: 3px;
     width: 100%;
+    border-radius: 2px;
+    position: absolute;
+}
+
+.nav-toggle-label span {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.nav-toggle-label span::before {
+    content: '';
+    top: -10px;
+}
+
+.nav-toggle-label span::after {
+    content: '';
+    top: 10px;
+}
+
+/* Mobiel menu standaard verbergen */
+.nav-menu {
+    display: flex;
+    gap: 1rem;
+}
+
+@media (max-width: 768px) {
+    .nav-toggle-label {
+        display: block;
+    }
+    .nav-menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        background: white;
+        position: absolute;
+        top: 60px; /* hoogte navbar */
+        left: 0;
+        border-top: 1px solid #ddd;
+    }
+    /* Menu tonen als checkbox checked is */
+    #nav-toggle:checked ~ .nav-menu {
+        display: flex;
+    }
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background: white;
+    border: 1px solid #ddd;
+    padding: 0.5rem 1rem;
+    min-width: 200px;
+    z-index: 10;
+}
+
+.dropdown-label {
+    cursor: pointer;
+    position: relative;
+}
+
+/* Checkbox voor dropdown */
+.dropdown-toggle {
+    display: none;
+}
+
+/* Toon dropdown als checked */
+.dropdown-toggle:checked + .dropdown-menu {
+    display: block;
+}
+
+/* Positionering dropdown container relatief maken */
+.dropdown-container {
+    position: relative;
+}
+
+/* Zorg dat dropdown menu niet doorsnijdt nav items */
+.nav-item {
+    position: relative;
+    padding: 0 0.5rem;
+}
+
+/* Style links */
+.nav-link {
+    color: var(--aquafin-blauw);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.nav-link:hover {
+    color: var(--aquafin-blauw-donker);
 }
