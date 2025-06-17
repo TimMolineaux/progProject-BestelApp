@@ -1,7 +1,9 @@
 package org.example.bestelapp.Controller;
 
 import org.example.bestelapp.Model.Order;
+import org.example.bestelapp.Model.Product;
 import org.example.bestelapp.Repository.OrderDAO;
+import org.example.bestelapp.Repository.ProductDAO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,15 +19,20 @@ import java.util.List;
 public class OrderViewController {
 
     private OrderDAO orderDAO;
+    private ProductDAO productDAO;
 
-    public OrderViewController(OrderDAO orderDAO) {
+    public OrderViewController(OrderDAO orderDAO, ProductDAO productDAO) {
         this.orderDAO = orderDAO;
+        this.productDAO = productDAO;
     }
 
     @GetMapping
     public String showOrders(Model model) {
-        List<Order> orders = orderDAO.findAllWithItemsAndProducts();
-        model.addAttribute("orders", orders);
+        List<Order> alleOrders = orderDAO.findAllWithItemsAndProducts();
+        List<Order> openOrders = alleOrders.stream()
+                .filter(order -> !order.isStatus())
+                .toList();
+        model.addAttribute("orders", openOrders);
         return "bestellingsbeheer";
     }
 
@@ -43,10 +50,35 @@ public class OrderViewController {
             return "redirect:/orders";
         }
 
+        // Voorraad verminderen
+        boolean voorraadTekort = false;
+        for (var item : order.getOrderItems()) {
+            Product product = item.getProduct();
+            int nieuweVoorraad = product.getStock() - item.getQuantity();
+
+            if (nieuweVoorraad < 0) {
+                voorraadTekort = true;
+                break;
+            }
+        }
+
+        if (voorraadTekort) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Niet genoeg voorraad om deze bestelling te voltooien.");
+            return "redirect:/orders";
+        }
+
+        // Als er genoeg voorraad is, verminderen en opslaan
+        for (var item : order.getOrderItems()) {
+            Product product = item.getProduct();
+            product.setStock(product.getStock() - item.getQuantity());
+            productDAO.save(product);
+        }
+
+        // Bestelling als voltooid markeren
         order.setStatus(true);
         orderDAO.save(order);
 
-        redirectAttributes.addFlashAttribute("successMessage", "Bestelling succesvol gemarkeerd als voltooid.");
+        redirectAttributes.addFlashAttribute("successMessage", "Bestelling succesvol gemarkeerd als voltooid en voorraad aangepast.");
         return "redirect:/orders";
     }
 
