@@ -8,6 +8,7 @@ import org.example.bestelapp.Repository.UserDAO;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
 import java.util.Map;
@@ -34,7 +35,8 @@ public class DataSeeder {
                 if (adminRole.isPresent()) {
                     User admin = new User();
                     admin.setEmail("admin@aquafin.be");
-                    admin.setPassword("admin123"); // nog versleutelen in je echte app
+                    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+                    admin.setPassword(encoder.encode("admin123"));
                     admin.setRole(adminRole.get());
 
                     userDAO.save(admin);

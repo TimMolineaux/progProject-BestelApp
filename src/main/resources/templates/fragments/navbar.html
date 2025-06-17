@@ -1,0 +1,55 @@
+<nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <img src="/images/aquafin-logo.png" alt="Aquafin" height="40">
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/">Home</a>
+                </li>
+
+                <!-- Winkelmandje dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="cartDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-cart"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end cart-dropdown" aria-labelledby="cartDropdown">
+                        <div class="cart-header d-flex justify-content-between align-items-center fw-bold mb-3">
+                            <span>Winkelmandje</span>
+                            <button type="button" class="btn-close" data-bs-toggle="dropdown" aria-label="Sluiten"></button>
+                        </div>
+                        <table class="table cart-table mb-3">
+                            <thead>
+                            <tr><th>Productnaam</th><th>Aantal</th></tr>
+                            </thead>
+                            <tbody>
+                            <tr><td>Productnaam 1</td><td>2</td></tr>
+                            <tr><td>Productnaam 2</td><td>1</td></tr>
+                            </tbody>
+                        </table>
+                        <button class="btn btn-primary btn-bestel w-100">Bestellen</button>
+                    </div>
+                </li>
+
+                <!-- User dropdown -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="javascript:void(0)" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        User
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" href="bestellingen.html">Bestellingen</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="/logout">Uitloggen</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+</div>
