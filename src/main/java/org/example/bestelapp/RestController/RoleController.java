@@ -1,4 +1,4 @@
-package org.example.bestelapp.Controller;
+package org.example.bestelapp.RestController;
 
 import org.example.bestelapp.Model.Role;
 import org.example.bestelapp.Repository.RoleDAO;

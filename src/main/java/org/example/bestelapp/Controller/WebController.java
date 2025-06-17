@@ -11,9 +11,4 @@ public class WebController {
         return "login";
     }
 
-    @GetMapping("/index")
-    public String index() {
-        return "index";
-    }
-
 }

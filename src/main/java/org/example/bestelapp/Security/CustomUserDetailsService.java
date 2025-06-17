@@ -1,5 +1,6 @@
-package org.example.bestelapp.Model;
+package org.example.bestelapp.Security;
 
+import org.example.bestelapp.Model.User;
 import org.example.bestelapp.Repository.UserDAO;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
