@@ -1,14 +1,12 @@
 package org.example.bestelapp.Controller;
 
+import org.example.bestelapp.Repository.CategoryDAO;
 import org.example.bestelapp.Repository.OrderItemDAO;
 import org.springframework.ui.Model;
 import org.example.bestelapp.Model.Product;
 import org.example.bestelapp.Repository.ProductDAO;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -19,16 +17,22 @@ public class StockController {
 
     private ProductDAO productDAO;
     private OrderItemDAO orderItemDAO;
+    private CategoryDAO categoryDAO;
 
-    public StockController(ProductDAO productDAO, OrderItemDAO orderItemDAO) {
+    public StockController(ProductDAO productDAO, OrderItemDAO orderItemDAO, CategoryDAO categoryDAO) {
         this.productDAO = productDAO;
         this.orderItemDAO = orderItemDAO;
+        this.categoryDAO = categoryDAO;
     }
 
     @GetMapping
     public String showStockOverview(Model model) {
         List<Product> producten = productDAO.findAll();
         model.addAttribute("producten", producten);
+
+        model.addAttribute("nieuwProduct", new Product());
+        model.addAttribute("categories", categoryDAO.findAll());
+
         return "productbeheer";
     }
 
@@ -46,6 +50,19 @@ public class StockController {
             redirectAttributes.addFlashAttribute("deleteSuccess", "Product succesvol verwijderd.");
         }
 
+        return "redirect:/stock";
+    }
+
+    @PostMapping("/new")
+    public String newProduct(@ModelAttribute("nieuwProduct") Product nieuwProduct,
+                                 RedirectAttributes redirectAttributes) {
+        if (nieuwProduct.getCategory() == null || nieuwProduct.getName() == null) {
+            redirectAttributes.addFlashAttribute("error", "Vul alle verplichte velden in.");
+            return "redirect:/stock";
+        }
+
+        productDAO.save(nieuwProduct);
+        redirectAttributes.addFlashAttribute("success", "Product succesvol toegevoegd.");
         return "redirect:/stock";
     }
 

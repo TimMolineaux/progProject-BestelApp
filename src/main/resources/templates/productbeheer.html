@@ -47,6 +47,38 @@
         </tr>
         </tbody>
     </table>
+
+    <section style="flex: 1;">
+        <h2 style="color: steelblue;">Product toevoegen</h2>
+
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+        <form th:action="@{/stock/new}" method="post" th:object="${nieuwProduct}">
+            <label>Categorie:<br>
+                <select th:field="*{category}">
+                    <option th:each="cat : ${categories}"
+                            th:value="${cat.id}"
+                            th:text="${cat.name}">
+                    </option>
+                </select>
+            </label><br><br>
+
+            <label>Productnaam:<br>
+                <input type="text" th:field="*{name}" required>
+            </label><br><br>
+
+            <label>Aantal op voorraad:<br>
+                <input type="number" th:field="*{stock}" min="0" required>
+            </label><br><br>
+
+            <label>
+                <input type="checkbox" th:field="*{popular}"> Populair
+            </label><br><br>
+
+            <button type="submit" class="btn-primary">Aanmaken</button>
+        </form>
+    </section>
 </main>
 
 </body>
