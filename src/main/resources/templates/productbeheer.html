@@ -40,6 +40,15 @@
             <td th:text="${product.category.name}">Categorie</td>
             <td th:text="${product.stock}">0</td>
             <td>
+                <form th:action="@{/stock/togglePopular/{id}(id=${product.id})}" method="post" style="display:inline;">
+                    <button type="submit"
+                            th:text="${product.popular} ? '⭐' : '☆'"
+                            title="Toggle popular">
+                    </button>
+                </form>
+            </td>
+
+            <td>
                 <form th:action="@{/stock/delete/{id}(id=${product.id})}" method="post">
                     <button type="submit" onclick="return confirm('Ben je zeker dat je dit product wil verwijderen?')">🗑️ Verwijder</button>
                 </form>

@@ -66,4 +66,14 @@ public class StockController {
         return "redirect:/stock";
     }
 
+    @PostMapping("/togglePopular/{id}")
+    public String togglePopular(@PathVariable int id, RedirectAttributes redirectAttributes) {
+        productDAO.findById(id).ifPresent(product -> {
+            product.setPopular(!product.isPopular());
+            productDAO.save(product);
+        });
+        redirectAttributes.addFlashAttribute("success", "Status aangepast.");
+        return "redirect:/stock";
+    }
+
 }
