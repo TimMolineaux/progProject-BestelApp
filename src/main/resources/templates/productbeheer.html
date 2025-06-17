@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Productbeheer</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<header class="topbar">
+    <img src="/image/aquafin-logo.png" alt="Aquafin" height="40" />
+    <div class="nav-buttons">
+        <button onclick="location.href='/index'">Home</button>
+        <button onclick="location.href='/orders'">Bestellingsbeheer</button>
+        <button onclick="history.back()">Terug</button>
+        <form th:action="@{/logout}" method="post" style="display: inline;">
+            <button type="submit">Uitloggen</button>
+        </form>
+    </div>
+</header>
+
+<main style="margin: 40px;">
+    <h2 style="color: steelblue;">Overzicht van alle producten</h2>
+
+    <div th:if="${deleteError}" class="alert alert-danger" th:text="${deleteError}"></div>
+    <div th:if="${deleteSuccess}" class="alert alert-success" th:text="${deleteSuccess}"></div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Productnaam</th>
+            <th>Categorie</th>
+            <th>Voorraad</th>
+            <th>Acties</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${producten}">
+            <td th:text="${product.name}">Naam</td>
+            <td th:text="${product.category.name}">Categorie</td>
+            <td th:text="${product.stock}">0</td>
+            <td>
+                <form th:action="@{/stock/delete/{id}(id=${product.id})}" method="post">
+                    <button type="submit" onclick="return confirm('Ben je zeker dat je dit product wil verwijderen?')">🗑️ Verwijder</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+
+</body>
+</html>
+
