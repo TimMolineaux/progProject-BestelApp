@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gebruikersbeheer</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<header class="topbar">
+    <img src="https://www.aquafin.be/themes/custom/aquafin/logo.svg" alt="Logo" class="logo">
+    <div class="nav-buttons">
+        <button onclick="location.href='/productbeheer'">Productbeheer</button>
+        <button onclick="location.href='/bestellingen'">Bestellingsbeheer</button>
+        <button onclick="history.back()">Terug</button>
+        <button onclick="location.href='/login'">User</button>
+    </div>
+</header>
+
+<main style="display: flex; justify-content: space-around; margin-top: 50px;">
+    <section>
+        <h2 style="color: lightcoral;">Gebruikersbeheer</h2>
+        <div th:if="${users.empty}">Geen gebruikers gevonden.</div>
+        <div th:each="user : ${users}">
+            <form th:action="@{/users/delete/{id}(id=${user.id})}" method="post" style="display: flex; align-items: center; gap: 10px;">
+                <span th:text="${user.email}">user@mail.com</span>
+                Rol: <input type="text" th:value="${user.role.name}" readonly>
+                <button type="submit">🗑️</button>
+            </form>
+            <br>
+        </div>
+    </section>
+
+    <section>
+        <h2 style="color: lightcoral;">Gebruiker toevoegen</h2>
+        <form th:action="@{/users/add}" method="post" th:object="${newUser}">
+            E-Mail:<br>
+            <input type="email" th:field="*{email}" required><br><br>
+            Wachtwoord:<br>
+            <input type="password" th:field="*{password}" required><br><br>
+            Rol:<br>
+            <select name="roleName">
+                <option th:each="role : ${roles}"
+                        th:value="${role.name}"
+                        th:text="${role.name}">
+                </option>
+            </select><br><br>
+            <button type="submit" style="background-color: #aaa;">Toevoegen</button>
+        </form>
+    </section>
+</main>
+
+</body>
+</html>
