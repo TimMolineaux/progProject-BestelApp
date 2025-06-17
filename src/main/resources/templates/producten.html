@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Productbeheer</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<header class="topbar">
+  <img src="https://www.aquafin.be/themes/custom/aquafin/logo.svg" alt="Logo" class="logo">
+  <div class="nav-buttons">
+    <button onclick="location.href='/productbeheer'">Productbeheer</button>
+    <button onclick="location.href='/bestellingen'">Bestellingsbeheer</button>
+    <button onclick="history.back()">Terug</button>
+    <button onclick="location.href='/login'">User</button>
+  </div>
+</header>
+
+<main style="display: flex; justify-content: space-around; margin-top: 50px;">
+
+  <!-- Productenlijst -->
+  <section style="flex: 1; margin-right: 40px;">
+    <h2 style="color: steelblue;">Producten</h2>
+    <table>
+      <thead>
+      <tr>
+        <th>Categorie</th>
+        <th>Productnaam</th>
+        <th>Aantal</th>
+        <th>Actie</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="product, iterStat : ${producten}">
+        <td th:text="${product.categorie}"></td>
+        <td th:text="${product.productnaam}"></td>
+        <td><input type="number" th:value="${product.aantal}" readonly></td>
+        <td>
+          <form th:action="@{/producten/verwijderen/{index}(index=${iterStat.index})}" method="post">
+            <button type="submit">🗑️</button>
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Product toevoegen -->
+  <section style="flex: 1;">
+    <h2 style="color: steelblue;">Product toevoegen</h2>
+    <form th:action="@{/producten/toevoegen}" method="post" th:object="${nieuwProduct}">
+      <label>Categorie:<br>
+        <select th:field="*{categorie}">
+          <option value="Bevestigingsmateriaal">Bevestigingsmateriaal</option>
+          <option value="Gereedschap">Gereedschap</option>
+          <option value="Overig">Overig</option>
+        </select>
+      </label><br><br>
+
+      <label>Productnaam:<br>
+        <input type="text" th:field="*{productnaam}">
+      </label><br><br>
+
+      <label>Aantal op voorraad:<br>
+        <input type="number" th:field="*{aantal}" min="0">
+      </label><br><br>
+
+      <label>
+        <input type="checkbox" th:field="*{populair}"> Populair
+      </label><br><br>
+
+      <button type="submit" class="btn-primary">Aanmaken</button>
+    </form>
+  </section>
+</main>
+
+</body>
+</html>
+

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Mijn bestellingen</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <img src="https://www.aquafin.be/themes/custom/aquafin/logo.svg" alt="Aquafin logo">
+        <span>Aquafin</span>
+    </div>
+    <div class="user-section">
+        🛒
+        <button>User<br><small>Home</small></button>
+    </div>
+</header>
+
+<h2>Mijn bestellingen</h2>
+
+<div th:each="order : ${orders}" class="order">
+    <strong>Order ID: <span th:text="${order.id}"></span></strong>
+    &nbsp;&nbsp;
+    <span th:text="${order.date}"></span>
+    <table>
+        <tr>
+            <th>Productnaam</th>
+            <th>Aantal</th>
+        </tr>
+        <tr th:each="item : ${order.items}">
+            <td th:text="${item.productnaam}"></td>
+            <td th:text="${item.aantal}"></td>
+        </tr>
+    </table>
+</div>
+
+</body>
+</html>
