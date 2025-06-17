@@ -15,35 +15,10 @@
                         <a class="nav-link active" href="/index">Home</a>
                     </li>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="cartDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="bi bi-cart"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-end cart-dropdown" aria-labelledby="cartDropdown">
-                            <div class="cart-header">
-                                <span>Winkelmandje</span>
-                                <button type="button" class="btn-close" data-bs-toggle="dropdown" aria-label="Sluiten"></button>
-                            </div>
-                            <table class="table cart-table">
-                                <thead>
-                                <tr><th>Productnaam</th><th>Aantal</th></tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-                            <button class="btn btn-primary btn-bestel">Bestellen</button>
-                        </div>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            User
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="bestellingen.html">Bestellingen</a></li>
-                            <li><hr class="dropdown-divider" /></li>
-                            <li><a class="dropdown-item" href="/logout">Uitloggen</a></li>
-                        </ul>
+                    <li class="nav-item">
+                        <form th:action="@{/logout}" method="post" style="display: inline;">
+                            <button type="submit" class="btn nav-link btn-link" style="text-decoration: none;">Uitloggen</button>
+                        </form>
                     </li>
                 </ul>
             </div>
