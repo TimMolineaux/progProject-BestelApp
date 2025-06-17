@@ -1,27 +1,38 @@
+// AdminController.java
 package org.example.bestelapp.Controller;
 
+import org.example.bestelapp.Model.User;
+import org.example.bestelapp.Service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Controller
+@RequestMapping("/admin")
 public class AdminController {
 
-    private List<String> accounts = new ArrayList<>();
+    private final UserService service;
 
-    @GetMapping("/admin")
-    public String adminPagina(Model model) {
-        model.addAttribute("accounts", accounts);
+    public AdminController(UserService service) {
+        this.service = service;
+    }
+
+    @GetMapping
+    public String adminPage(Model model) {
+        model.addAttribute("users", service.getAllUsers());
+        model.addAttribute("newUser", new User());
         return "admin";
     }
 
-    @PostMapping("/admin")
-    public String voegAccountToe(@RequestParam("gebruikersnaam") String gebruikersnaam, Model model) {
-        accounts.add(gebruikersnaam);
-        model.addAttribute("accounts", accounts);
-        return "admin"; // zelfde pagina opnieuw tonen met nieuwe data
+    @PostMapping("/add")
+    public String addUser(@ModelAttribute("newUser") User user) {
+        service.addUser(user);
+        return "redirect:/admin";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String deleteUser(@PathVariable Long id) {
+        service.deleteUser(id);
+        return "redirect:/admin";
     }
 }

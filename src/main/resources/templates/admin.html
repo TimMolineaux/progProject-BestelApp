@@ -21,22 +21,30 @@
     <!-- Gebruikerslijst -->
     <section>
         <h2 style="color: lightcoral;">Gebruikers Beheer</h2>
-        <div th:each="user : ${gebruikers}">
-            <span th:text="${user.naam}">User X</span>
-            Rol: <input type="text" th:value="${user.rol}" readonly>
-            <button>🗑️</button>
-            <br><br>
+        <div th:each="user : ${users}">
+            <form th:action="@{/admin/delete/{id}(id=${user.id})}" method="post" style="display: flex; align-items: center; gap: 10px;">
+                <span th:text="${user.email}">User X</span>
+                Rol: <input type="text" th:value="${user.role}" readonly>
+                <button type="submit">🗑️</button>
+            </form>
+            <br>
         </div>
     </section>
 
     <!-- Gebruiker toevoegen -->
     <section>
         <h2 style="color: lightcoral;">Gebruikers aanmaken</h2>
-        <form method="post" action="/admin/toevoegen">
+        <form th:action="@{/admin/add}" method="post" th:object="${newUser}">
             E-Mail:<br>
-            <input type="email" name="email"><br><br>
+            <input type="email" th:field="*{email}"><br><br>
             Wachtwoord:<br>
-            <input type="password" name="wachtwoord"><br><br>
+            <input type="password" th:field="*{password}"><br><br>
+            Rol:<br>
+            <select th:field="*{role}">
+                <option value="Technieker">Technieker</option>
+                <option value="Admin">Admin</option>
+                <option value="User">User</option>
+            </select><br><br>
             <button type="submit" style="background-color: #aaa;">Toevoegen</button>
         </form>
     </section>
