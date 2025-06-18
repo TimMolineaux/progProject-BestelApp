@@ -7,15 +7,7 @@
 </head>
 <body>
 
-<header class="topbar">
-    <img src="https://www.aquafin.be/themes/custom/aquafin/logo.svg" alt="Logo" class="logo">
-    <div class="nav-buttons">
-        <button onclick="location.href='/productbeheer'">Productbeheer</button>
-        <button onclick="location.href='/bestellingen'">Bestellingsbeheer</button>
-        <button onclick="history.back()">Terug</button>
-        <button onclick="location.href='/login'">User</button>
-    </div>
-</header>
+<div th:replace="fragments/navbar :: navbar"></div>
 
 <main style="display: flex; justify-content: space-around; margin-top: 50px;">
     <section>

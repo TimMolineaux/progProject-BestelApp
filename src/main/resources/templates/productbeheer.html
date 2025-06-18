@@ -7,17 +7,7 @@
 </head>
 <body>
 
-<header class="topbar">
-    <img src="/image/aquafin-logo.png" alt="Aquafin" height="40" />
-    <div class="nav-buttons">
-        <button onclick="location.href='/index'">Home</button>
-        <button onclick="location.href='/orders'">Bestellingsbeheer</button>
-        <button onclick="history.back()">Terug</button>
-        <form th:action="@{/logout}" method="post" style="display: inline;">
-            <button type="submit">Uitloggen</button>
-        </form>
-    </div>
-</header>
+<div th:replace="fragments/navbar :: navbar"></div>
 
 <main style="margin: 40px;">
     <h2 style="color: steelblue;">Overzicht van alle producten</h2>
