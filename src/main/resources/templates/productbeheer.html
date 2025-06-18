@@ -16,6 +16,9 @@
     <div th:if="${deleteError}" class="alert alert-danger" th:text="${deleteError}"></div>
     <div th:if="${deleteSuccess}" class="alert alert-success" th:text="${deleteSuccess}"></div>
 
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
     <table>
         <thead>
         <tr>
@@ -50,9 +53,6 @@
 
     <section style="flex: 1;">
         <h2 style="color: steelblue;">Product toevoegen</h2>
-
-        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
-        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
 
         <form th:action="@{/stock/new}" method="post" th:object="${nieuwProduct}">
             <label>Categorie:<br>

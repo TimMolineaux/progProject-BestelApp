@@ -4,41 +4,42 @@
     <meta charset="UTF-8">
     <title>Gebruikersbeheer</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    <link rel="stylesheet" th:href="@{/css/navbar.css}">
 </head>
 <body>
 
 <div th:replace="fragments/navbar :: navbar"></div>
 
-<main style="display: flex; justify-content: space-around; margin-top: 50px;">
-    <section>
-        <h2 style="color: lightcoral;">Gebruikersbeheer</h2>
+<main class="beheer-main">
+    <section class="beheer-gedeelte">
+        <h2 class="beheer-titel">Gebruikersbeheer</h2>
         <div th:if="${users.empty}">Geen gebruikers gevonden.</div>
-        <div th:each="user : ${users}">
-            <form th:action="@{/users/delete/{id}(id=${user.id})}" method="post" style="display: flex; align-items: center; gap: 10px;">
+        <div th:each="user : ${users}" class="gebruiker-regel">
+            <form th:action="@{/users/delete/{id}(id=${user.id})}" method="post" class="gebruiker-formulier">
                 <span th:text="${user.email}">user@mail.com</span>
                 Rol: <input type="text" th:value="${user.role.name}" readonly>
-                <button type="submit">🗑️</button>
+                <button type="submit" class="delete-knop">🗑️</button>
             </form>
-            <br>
         </div>
     </section>
 
-    <section>
-        <h2 style="color: lightcoral;">Gebruiker toevoegen</h2>
-        <form th:action="@{/users/add}" method="post" th:object="${newUser}">
-            E-Mail:<br>
-            <input type="email" th:field="*{email}" required><br><br>
-            Wachtwoord:<br>
-            <input type="password" th:field="*{password}" required><br><br>
-            Rol:<br>
+    <section class="beheer-gedeelte">
+        <h2 class="beheer-titel">Gebruiker toevoegen</h2>
+        <form th:action="@{/users/add}" method="post" th:object="${newUser}" class="toevoeg-formulier">
+            <label>E-Mail:</label>
+            <input type="email" th:field="*{email}" required>
+
+            <label>Wachtwoord:</label>
+            <input type="password" th:field="*{password}" required>
+
+            <label>Rol:</label>
             <select name="roleName">
                 <option th:each="role : ${roles}"
                         th:value="${role.name}"
                         th:text="${role.name}">
                 </option>
-            </select><br><br>
-            <button type="submit" style="background-color: #aaa;">Toevoegen</button>
+            </select>
+
+            <button type="submit" class="toevoeg-knop">Toevoegen</button>
         </form>
     </section>
 </main>

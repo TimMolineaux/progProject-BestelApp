@@ -1,0 +1,50 @@
+.cart-floating {
+    position: fixed;
+    top: 70px; /* ruimte onder de navbar */
+    right: 20px;
+    z-index: 1050;
+    text-align: right;
+}
+
+.cart-icon {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.cart-icon svg {
+    width: 32px;
+    height: 32px;
+}
+
+.cart-icon .badge {
+    position: absolute;
+    top: -6px;
+    right: -10px;
+    font-size: 12px;
+    background-color: red;
+    color: white;
+    padding: 4px 6px;
+    border-radius: 50%;
+    font-weight: bold;
+}
+
+.cart-content {
+    display: none;
+    position: absolute;
+    top: 40px; /* onder het icoon */
+    right: 0;
+    width: 360px;
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+    z-index: 1051;
+}
+
+.cart-content.show {
+    display: block;
+}

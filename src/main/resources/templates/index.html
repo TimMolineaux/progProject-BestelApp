@@ -4,27 +4,37 @@
   <meta charset="UTF-8" />
   <title>Homepagina</title>
   <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" th:href="@{/css/cart.css}">
   <link rel="stylesheet" th:href="@{/css/navbar.css}">
+
 </head>
 <body>
 
 <div th:replace="fragments/navbar :: navbar"></div>
 
-<div class="container mt-4">
-  <h1>Welkom op de Homepagina!</h1>
-
-  <div class="dropdown-menu dropdown-menu-end p-3" aria-labelledby="cartDropdown" style="min-width: 300px;">
-    <h6 class="dropdown-header">Winkelmandje</h6>
+<!-- 🛒 Winkelmandje rechtsboven -->
+<div class="cart-floating">
+  <div class="cart-icon" id="cartToggle" style="cursor:pointer;">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="black" class="bi bi-bag" viewBox="0 0 16 16">
+      <path d="M8 1a2 2 0 0 0-2 2v1H4.5A1.5 1.5 0 0 0 3 5.5v8A1.5 1.5 0 0 0 4.5 15h7A1.5 1.5 0 0 0 13 13.5v-8A1.5 1.5 0 0 0 11.5 4H10V3a2 2 0 0 0-2-2zm3 3H5V3a1 1 0 0 1 2 0v1h2V3a1 1 0 0 1 2 0v1z"/>
+    </svg>
+    <span class="badge bg-danger" id="cartCount"
+          th:if="${cartItems != null and #lists.size(cartItems) > 0}"
+          th:text="${#lists.size(cartItems)}" style="display:none;"></span>
+  </div>
+  <div class="cart-content" id="cartContent" style="display:none;">
+    <h6>Winkelmandje</h6>
 
     <div th:if="${#lists.isEmpty(cartItems)}">
       <p class="text-muted">Winkelmandje is leeg.</p>
     </div>
 
-    <table class="table table-sm" th:if="${!#lists.isEmpty(cartItems)}">
+    <table class="cart-table" th:if="${!#lists.isEmpty(cartItems)}" style="width:100%; border-collapse: collapse;">
       <thead>
       <tr>
         <th>Productnaam</th>
         <th>Aantal</th>
+        <th></th>
       </tr>
       </thead>
       <tbody>
@@ -34,30 +44,32 @@
         <td>
           <form th:action="@{/index/remove}" method="post">
             <input type="hidden" name="productId" th:value="${entry.key.id}" />
-            <button type="submit" class="btn btn-sm btn-danger">Verwijder</button>
+            <button type="submit" class="btn-danger btn-sm">Verwijder</button>
           </form>
         </td>
       </tr>
       </tbody>
     </table>
 
-    <div class="d-grid">
+    <div th:if="${!#lists.isEmpty(cartItems)}" style="margin-top: 1rem;">
       <form th:action="@{/index/placeorder}" method="post">
-        <button type="submit" class="btn btn-primary btn-sm">Bestellen</button>
+        <button type="submit" class="btn-primary btn-sm">Bestellen</button>
       </form>
     </div>
   </div>
+</div>
 
-  <div class="row align-items-center mt-5 mb-3">
-    <div class="col-md-6">
+<div class="page-container" style="max-width: 1200px; margin: 2rem auto; padding: 0 1rem;">
+  <h1>Welkom op de Homepagina!</h1>
+
+  <div class="search-section" style="display: flex; justify-content: space-between; align-items: center; margin: 3rem 0 1rem 0;">
+    <div>
       <h2>Populaire producten</h2>
     </div>
-    <div class="col-md-6 text-end">
-      <form class="d-flex" method="get" action="/index">
-        <input class="form-control me-2" type="search" name="search"
-               placeholder="Zoek product..." th:value="${searchTerm}" />
-
-        <select class="form-select me-2" name="category">
+    <div>
+      <form method="get" action="/index" style="display: flex; align-items: center;">
+        <input type="search" name="search" placeholder="Zoek product..." th:value="${searchTerm}" style="padding: 0.4rem; margin-right: 0.5rem;" />
+        <select name="category" style="padding: 0.4rem; margin-right: 0.5rem;">
           <option th:value="0" th:selected="${selectedCategory == null}">Alle categorieën</option>
           <option th:each="cat : ${categories}"
                   th:value="${cat.id}"
@@ -65,60 +77,86 @@
                   th:selected="${selectedCategory == cat.id}">
           </option>
         </select>
-
-        <button class="btn btn-outline-primary" type="submit">
-          <i class="bi bi-search"></i>
-        </button>
+        <button type="submit" style="padding: 0.4rem 0.8rem;">Zoeken</button>
       </form>
     </div>
   </div>
   <hr/>
 
-  <div class="row">
-    <div class="col-md-4 mb-4" th:each="product : ${popularProducts}">
-      <div class="card h-100">
-        <img th:src="${product.image != null ? product.image : '/images/default.png'}" class="card-img-top" th:alt="${product.name}" />
-        <div class="card-body">
-          <h5 class="card-title" th:text="${product.name}">Productnaam</h5>
-          <p class="card-text"><strong>In stock:</strong> <span th:text="${product.stock}">0</span></p>
-          <form method="post" th:action="@{/index/add}">
-            <input type="hidden" name="productId" th:value="${product.id}" />
-            <input type="number" name="aantal" class="form-control mb-2" min="1" value="1" />
-            <button class="btn btn-primary" type="submit">Toevoegen</button>
-          </form>
-        </div>
+  <div class="products-grid" style="display: flex; flex-wrap: wrap; gap: 1rem;">
+    <div class="product-card" th:each="product : ${popularProducts}" style="flex: 1 1 calc(33% - 1rem); box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; padding: 1rem;">
+      <img th:src="${product.image != null ? product.image : '/images/default.png'}" alt="" th:alt="${product.name}" style="width: 100%; height: auto; object-fit: contain;"/>
+      <div class="product-info" style="margin-top: 0.5rem;">
+        <h5 th:text="${product.name}">Productnaam</h5>
+        <p><strong>In stock:</strong> <span th:text="${product.stock}">0</span></p>
+        <form method="post" th:action="@{/index/add}">
+          <input type="hidden" name="productId" th:value="${product.id}" />
+          <input type="number" name="aantal" min="1" value="1" style="width: 50px; margin-bottom: 0.5rem;" />
+          <br/>
+          <button type="submit" style="padding: 0.3rem 0.8rem;">Toevoegen</button>
+        </form>
       </div>
     </div>
   </div>
 
   <!-- Producten per categorie -->
-  <div class="row align-items-center mt-5 mb-3">
-    <div class="col-md-6">
-      <h2>Producten per categorie</h2>
-    </div>
+  <div style="margin-top: 3rem;">
+    <h2>Producten per categorie</h2>
   </div>
   <hr/>
 
   <div th:each="entry : ${productsByCategory}">
     <h3 th:text="${entry.key}">Categorie</h3>
-    <div class="row mb-4">
-      <div class="col-md-4" th:each="product : ${entry.value}">
-        <div class="card h-100">
-          <img th:src="${product.image != null ? product.image : '/images/default.png'}" class="card-img-top" th:alt="${product.name}" />
-          <div class="card-body">
-            <h5 class="card-title" th:text="${product.name}">Productnaam</h5>
-            <p class="card-text"><strong>In stock:</strong> <span th:text="${product.stock}">0</span></p>
-            <form method="post" th:action="@{/index/add}">
-              <input type="hidden" name="productId" th:value="${product.id}" />
-              <input type="number" name="aantal" class="form-control mb-2" min="1" value="1" />
-              <button class="btn btn-primary" type="submit">Toevoegen</button>
-            </form>
-          </div>
+    <div class="products-grid" style="display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
+      <div class="product-card" th:each="product : ${entry.value}" style="flex: 1 1 calc(33% - 1rem); box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; padding: 1rem;">
+        <img th:src="${product.image != null ? product.image : '/images/default.png'}" alt="" th:alt="${product.name}" style="width: 100%; height: auto; object-fit: contain;"/>
+        <div class="product-info" style="margin-top: 0.5rem;">
+          <h5 th:text="${product.name}">Productnaam</h5>
+          <p><strong>In stock:</strong> <span th:text="${product.stock}">0</span></p>
+          <form method="post" th:action="@{/index/add}">
+            <input type="hidden" name="productId" th:value="${product.id}" />
+            <input type="number" name="aantal" min="1" value="1" style="width: 50px; margin-bottom: 0.5rem;" />
+            <br/>
+            <button type="submit" style="padding: 0.3rem 0.8rem;">Toevoegen</button>
+          </form>
         </div>
       </div>
     </div>
   </div>
+</div>
 
+<script>
+  const cartToggle = document.getElementById("cartToggle");
+  const cartContent = document.getElementById("cartContent");
+
+  document.addEventListener("click", function (event) {
+    const isClickInside = cartToggle.contains(event.target) || cartContent.contains(event.target);
+    if (!isClickInside) {
+      cartContent.style.display = "none";
+    }
+  });
+
+  cartToggle.addEventListener("click", function () {
+    if (cartContent.style.display === "block") {
+      cartContent.style.display = "none";
+    } else {
+      cartContent.style.display = "block";
+    }
+  });
+
+  function updateCartCount(count) {
+    const cartCount = document.getElementById('cartCount');
+    if (count > 0) {
+      cartCount.textContent = count;
+      cartCount.style.display = 'inline-block'; // tonen
+    } else {
+      cartCount.style.display = 'none'; // verbergen als 0
+    }
+  }
+
+  let aantalItems = 0;
+  updateCartCount(aantalItems);
+</script>
 
 </body>
 </html>

@@ -1,15 +1,19 @@
+/* ALGEMENE STIJL */
 body {
     background-color: #ffffff;
     font-family: Arial, sans-serif;
     text-align: center;
-    margin-top: 40px;
+    margin: 0;
 }
 
+/* LOGO */
 .logo {
     width: 120px;
     margin-bottom: 20px;
+    height: 40px;
 }
 
+/* LOGIN BOX */
 .login-box {
     background-color: #c4c4c4;
     padding: 30px;
@@ -31,14 +35,6 @@ body {
     border-radius: 4px;
 }
 
-.login-box button {
-    padding: 10px 20px;
-    border: none;
-    background-color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    border-radius: 4px;
-}
 
 .login-box .forgot {
     font-size: 0.9em;
@@ -60,11 +56,30 @@ body {
     font-weight: bold;
 }
 
+/* TOPBAR EN NAVIGATIE */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ccc;
+}
+
+.nav-buttons button {
+    margin-left: 10px;
+    padding: 8px 16px;
+    background-color: #f0f0f0;
+    border: 1px solid #aaa;
+    cursor: pointer;
+}
+
+/* TITEL */
 .title {
     text-align: center;
     margin: 20px 0;
 }
 
+/* BESTELLINGEN */
 .orders-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -114,4 +129,486 @@ th, td {
     font-size: 18px;
     padding: 5px 10px;
     cursor: pointer;
+}
+
+/* HEADER */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+nav button {
+    margin: 0 5px;
+}
+
+/* Container */
+.container {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+/* Winkelmand icoon en badge */
+.cart-floating {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    font-family: Arial, sans-serif;
+}
+
+.cart-icon {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.cart-icon svg {
+    vertical-align: middle;
+}
+
+.badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #dc3545; /* Bootstrap rood */
+    color: white;
+    border-radius: 50%;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: bold;
+    min-width: 20px;
+    text-align: center;
+    line-height: 1;
+    display: inline-block;
+}
+
+/* Dropdown winkelmandje */
+.cart-content {
+    display: none;
+    position: absolute;
+    top: 30px;
+    right: 0;
+    width: 300px;
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 14px;
+    z-index: 1001;
+}
+
+.cart-content.show {
+    display: block;
+}
+
+.dropdown-header {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Tabel */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+}
+
+th, td {
+    text-align: left;
+    padding: 6px 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Buttons */
+/* Algemene button stijl, behalve binnen navbar */
+body button:not(.nav-buttons button) {
+    background-color: #0d6efd; /* Bootstrap primary blauw */
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+button.btn-danger {
+    background-color: #dc3545;
+}
+
+button.btn-sm {
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+/* Form inputs */
+input[type="number"] {
+    width: 100%;
+    padding: 4px 6px;
+    box-sizing: border-box;
+    margin-bottom: 6px;
+}
+
+/* Grid layout voor producten */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -10px;
+}
+
+.col-md-4 {
+    flex: 0 0 33.3333%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem;
+}
+
+/* Kaart */
+.card {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.card-img-top {
+    width: 100%;
+    object-fit: cover;
+    max-height: 200px;
+}
+
+.card-body {
+    padding: 10px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.card-text {
+    margin-bottom: 0.8rem;
+}
+
+/* Tekst rechts uitlijnen */
+.text-end {
+    text-align: right;
+}
+
+/* Form inline-flex */
+form.d-flex {
+    display: flex;
+    gap: 8px;
+}
+
+/* Select en input */
+select.form-select, input.form-control {
+    padding: 6px 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Knop outline */
+button.btn-outline-primary {
+    background-color: transparent;
+    border: 1px solid #0d6efd;
+    color: #0d6efd;
+}
+
+button.btn-outline-primary:hover {
+    background-color: #0d6efd;
+    color: white;
+}
+
+/*tinus-css*/
+
+.productbeheer {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f5faff;
+    color: #003366;
+    text-align: left;
+}
+
+.productbeheer h2 {
+    color: steelblue;
+    margin-bottom: 20px;
+}
+
+.productbeheer table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.productbeheer table,
+.productbeheer th,
+.productbeheer td {
+    border: 1px solid #b3d1ff;
+}
+
+.productbeheer th {
+    background-color: #cce6ff;
+    color: #003366;
+    padding: 10px;
+}
+
+.productbeheer td {
+    padding: 8px;
+    text-align: center;
+}
+
+.productbeheer form {
+    margin-top: 20px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.productbeheer form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.productbeheer form input[type="text"],
+.productbeheer form input[type="number"],
+.productbeheer form select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #b3d1ff;
+    border-radius: 4px;
+    margin-top: 5px;
+}
+
+.productbeheer button.btn-primary {
+    padding: 8px 16px;
+    border: none;
+    background-color: #0066cc;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.productbeheer button.btn-primary:hover {
+    background-color: #004c99;
+}
+
+.productbeheer .alert {
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.productbeheer .alert-success {
+    background-color: #e6f9e6;
+    color: #2d662d;
+    border: 1px solid #88cc88;
+}
+
+.productbeheer .alert-danger {
+    background-color: #ffe6e6;
+    color: #b30000;
+    border: 1px solid #ff9999;
+}
+
+.productbeheer button[title="Toggle popular"] {
+    background: none;
+    font-size: 20px;
+    border: none;
+    color: #ffcc00;
+    cursor: pointer;
+}
+
+.beheer-main {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 50px;
+    padding: 0 20px;
+}
+
+.beheer-gedeelte {
+    width: 40%;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.beheer-titel {
+    color: #0066cc;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.gebruiker-regel {
+    margin-bottom: 15px;
+}
+
+.gebruiker-formulier {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.delete-knop {
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.delete-knop:hover {
+    background-color: #004c99;
+}
+
+.toevoeg-formulier {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.toevoeg-formulier input,
+.toevoeg-formulier select {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.toevoeg-knop {
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.toevoeg-knop:hover {
+    background-color: #004c99;
+}
+
+
+
+body.bestellingsbeheer {
+    background-color: #f5faff;
+    font-family: Arial, sans-serif;
+    color: #003366;
+    margin: 0;
+    padding: 0 20px 50px;
+}
+
+body.bestellingsbeheer h2 {
+    text-align: center;
+    margin: 40px 0 30px;
+    font-size: 1.8em;
+    color: steelblue;
+}
+
+body.bestellingsbeheer .alert {
+    padding: 12px 15px;
+    border-radius: 5px;
+    max-width: 700px;
+    margin: 0 auto 20px;
+    font-weight: bold;
+}
+
+body.bestellingsbeheer .alert-success {
+    background-color: #e6f9e6;
+    color: #2d662d;
+    border: 1px solid #88cc88;
+}
+
+body.bestellingsbeheer .alert-danger {
+    background-color: #ffe6e6;
+    color: #b30000;
+    border: 1px solid #ff9999;
+}
+
+body.bestellingsbeheer .order {
+    border: 1px solid #b3d1ff;
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body.bestellingsbeheer .order strong {
+    color: #003366;
+}
+
+body.bestellingsbeheer table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background-color: #fff;
+}
+
+body.bestellingsbeheer th {
+    background-color: #cce6ff;
+    color: #003366;
+    padding: 10px;
+    border-bottom: 1px solid #b3d1ff;
+    text-align: left;
+}
+
+body.bestellingsbeheer td {
+    padding: 10px;
+    border-bottom: 1px solid #e0eaff;
+}
+
+body.bestellingsbeheer button.btn-primary,
+body.bestellingsbeheer button.btn-danger {
+    padding: 10px 15px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+}
+
+body.bestellingsbeheer button.btn-primary {
+    background-color: #0066cc;
+    color: white;
+}
+
+body.bestellingsbeheer button.btn-primary:hover {
+    background-color: #004c99;
+}
+
+body.bestellingsbeheer button.btn-danger {
+    background-color: #ff4d4d;
+    color: white;
+}
+
+body.bestellingsbeheer button.btn-danger:hover {
+    background-color: #cc0000;
 }
