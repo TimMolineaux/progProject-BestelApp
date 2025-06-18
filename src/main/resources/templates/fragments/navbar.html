@@ -1,0 +1,15 @@
+
+<div class="navbar" th:fragment="navbar">
+  <header class="topbar">
+    <img src="/image/aquafin-logo.png" alt="Aquafin" height="40" />
+    <div class="nav-buttons">
+      <button onclick="location.href='/index'">Home</button>
+      <button onclick="location.href='/stock'">Productbeheer</button>
+      <button onclick="location.href='/orders'">Bestellingsbeheer</button>
+      <button onclick="location.href='/users'">Gebruikersbeheer</button>
+      <form th:action="@{/logout}" method="post" style="display: inline;">
+        <button type="submit">Uitloggen</button>
+      </form>
+    </div>
+  </header>
+</div>

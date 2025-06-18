@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Productbeheer</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+</head>
+<body class="productbeheer">
+
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<main style="margin: 40px;">
+    <h2 style="color: steelblue;">Overzicht van alle producten</h2>
+
+    <div th:if="${deleteError}" class="alert alert-danger" th:text="${deleteError}"></div>
+    <div th:if="${deleteSuccess}" class="alert alert-success" th:text="${deleteSuccess}"></div>
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Productnaam</th>
+            <th>Categorie</th>
+            <th>Voorraad</th>
+            <th colspan="2">Acties</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${producten}">
+            <td th:text="${product.name}">Naam</td>
+            <td th:text="${product.category.name}">Categorie</td>
+
+            <!-- Voorraad + formulier voor extra stock -->
+            <td>
+                <span th:text="${product.stock}">0</span> stuks<br/>
+                <form th:action="@{/stock/add/{id}(id=${product.id})}" method="post" style="margin-top: 5px;">
+                    <input type="number" name="extraStock" min="1" placeholder="Aantal toevoegen" required style="width: 100px;" />
+                    <button type="submit">➕</button>
+                </form>
+            </td>
+
+            <!-- Toggle populair -->
+            <td>
+                <form th:action="@{/stock/togglePopular/{id}(id=${product.id})}" method="post" style="display:inline;">
+                    <button type="submit"
+                            th:text="${product.popular} ? '⭐' : '☆'"
+                            title="Toggle popular">
+                    </button>
+                </form>
+            </td>
+
+            <!-- Verwijder product -->
+            <td>
+                <form th:action="@{/stock/delete/{id}(id=${product.id})}" method="post">
+                    <button type="submit" onclick="return confirm('Ben je zeker dat je dit product wil verwijderen?')">🗑️ Verwijder</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <section style="flex: 1; margin-top: 40px;">
+        <h2 style="color: steelblue;">Product toevoegen</h2>
+
+        <form th:action="@{/stock/new}" method="post" th:object="${nieuwProduct}">
+            <label>Categorie:<br>
+                <select th:field="*{category}">
+                    <option th:each="cat : ${categories}"
+                            th:value="${cat.id}"
+                            th:text="${cat.name}">
+                    </option>
+                </select>
+            </label><br><br>
+
+            <label>Productnaam:<br>
+                <input type="text" th:field="*{name}" required>
+            </label><br><br>
+
+            <label>Aantal op voorraad:<br>
+                <input type="number" th:field="*{stock}" min="0" required>
+            </label><br><br>
+
+            <label>
+                <input type="checkbox" th:field="*{popular}"> Populair
+            </label><br><br>
+
+            <button type="submit" class="btn-primary">Aanmaken</button>
+        </form>
+    </section>
+</main>
+
+</body>
+</html>

@@ -1,0 +1,56 @@
+/* 🛒 Winkelmandje vast rechtsboven op het scherm */
+.cart-floating {
+    position: fixed;          /* Vastzetten op het scherm */
+    top: 70px;                /* Ruimte onder je navbar */
+    right: 20px;              /* Afstand vanaf rechterrand */
+    z-index: 9999;            /* Zorg dat het boven andere elementen ligt */
+    text-align: right;
+}
+
+/* Het winkelmand-icoon zelf */
+.cart-icon {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+}
+
+/* SVG pictogram grootte */
+.cart-icon svg {
+    width: 32px;
+    height: 32px;
+}
+
+/* Badge met aantal items */
+.cart-icon .badge {
+    position: absolute;
+    top: -6px;
+    right: -10px;
+    font-size: 12px;
+    background-color: red;
+    color: white;
+    padding: 4px 6px;
+    border-radius: 50%;
+    font-weight: bold;
+}
+
+/* Inhoud van het winkelmandje (dropdown) */
+.cart-content {
+    display: none;            /* Verborgen totdat op het icoon wordt geklikt */
+    position: absolute;
+    top: 40px;                /* Direct onder het icoon */
+    right: 0;
+    width: 360px;
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.15);
+    z-index: 1051;            /* Iets hoger dan het icoon */
+}
+
+/* Toon het mandje wanneer actief */
+.cart-content.show {
+    display: block;
+}

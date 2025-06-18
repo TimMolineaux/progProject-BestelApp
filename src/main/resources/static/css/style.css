@@ -1,0 +1,455 @@
+/* ALGEMENE STIJL */
+body {
+    background-color: #ffffff;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    margin-top: 40px;
+}
+
+/* LOGO */
+.logo {
+    width: 120px;
+    margin-bottom: 20px;
+    height: 40px;
+}
+
+/* LOGIN BOX */
+.login-box {
+    background-color: #c4c4c4;
+    padding: 30px;
+    width: 300px;
+    margin: 0 auto;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.login-box h2 {
+    margin-bottom: 20px;
+}
+
+.login-box input {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 4px;
+}
+
+
+
+.login-box .forgot {
+    font-size: 0.9em;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.login-box p {
+    font-size: 0.95em;
+    margin-bottom: 10px;
+}
+
+.login-box h3 {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.login-box button span {
+    font-weight: bold;
+}
+
+/* TOPBAR EN NAVIGATIE */
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ccc;
+}
+
+.nav-buttons button {
+    margin-left: 10px;
+    padding: 8px 16px;
+    background-color: #f0f0f0;
+    border: 1px solid #aaa;
+    cursor: pointer;
+}
+
+/* TITEL */
+.title {
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* BESTELLINGEN */
+.orders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.order-card {
+    border: 1px solid #aaa;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+th, td {
+    padding: 5px;
+    text-align: center;
+}
+
+.order-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.delete-btn {
+    background-color: white;
+    border: 1px solid #aaa;
+    font-size: 18px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+/* HEADER */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+nav button {
+    margin: 0 5px;
+}
+
+/* Container */
+.container {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+/* Winkelmand icoon en badge */
+.cart-floating {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    font-family: Arial, sans-serif;
+}
+
+.cart-icon {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.cart-icon svg {
+    vertical-align: middle;
+}
+
+.badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #dc3545; /* Bootstrap rood */
+    color: white;
+    border-radius: 50%;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: bold;
+    min-width: 20px;
+    text-align: center;
+    line-height: 1;
+    display: inline-block;
+}
+
+/* Dropdown winkelmandje */
+.cart-content {
+    display: none;
+    position: absolute;
+    top: 30px;
+    right: 0;
+    width: 300px;
+    background: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 14px;
+    z-index: 1001;
+}
+
+.cart-content.show {
+    display: block;
+}
+
+.dropdown-header {
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Tabel */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+}
+
+th, td {
+    text-align: left;
+    padding: 6px 8px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Buttons */
+button {
+    background-color: #0d6efd; /* Bootstrap primary blauw */
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button.btn-danger {
+    background-color: #dc3545;
+}
+
+button.btn-sm {
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+/* Form inputs */
+input[type="number"] {
+    width: 100%;
+    padding: 4px 6px;
+    box-sizing: border-box;
+    margin-bottom: 6px;
+}
+
+/* Grid layout voor producten */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -10px;
+}
+
+.col-md-4 {
+    flex: 0 0 33.3333%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem;
+}
+
+/* Kaart */
+.card {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.card-img-top {
+    width: 100%;
+    object-fit: cover;
+    max-height: 200px;
+}
+
+.card-body {
+    padding: 10px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.card-text {
+    margin-bottom: 0.8rem;
+}
+
+/* Tekst rechts uitlijnen */
+.text-end {
+    text-align: right;
+}
+
+/* Form inline-flex */
+form.d-flex {
+    display: flex;
+    gap: 8px;
+}
+
+/* Select en input */
+select.form-select, input.form-control {
+    padding: 6px 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Knop outline */
+button.btn-outline-primary {
+    background-color: transparent;
+    border: 1px solid #0d6efd;
+    color: #0d6efd;
+}
+
+button.btn-outline-primary:hover {
+    background-color: #0d6efd;
+    color: white;
+}
+.active-category {
+    font-weight: bold;
+    color: darkred;
+    text-decoration: underline;
+}
+/* Productpagina container en layout */
+.page-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* Sidebar */
+aside {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    width: 200px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+aside ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+aside ul li {
+    margin-bottom: 10px;
+}
+
+aside ul li a {
+    color: #333;
+    display: block;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+aside ul li a:hover {
+    background-color: #ececec;
+}
+
+aside ul li a.active-category {
+    background-color: #ffe6e6;
+    color: darkred;
+    font-weight: bold;
+}
+
+/* Producten grid */
+.products-grid {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* Productkaart */
+.product-card {
+    flex: 1 1 calc(33.333% - 20px);
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.product-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.product-info {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+.product-info h5 {
+    font-size: 1.1rem;
+    margin: 0 0 0.5rem;
+    color: #333;
+}
+
+.product-info .price {
+    font-weight: bold;
+    margin-top: 0.5rem;
+    color: #28a745;
+}
+
+.product-info form {
+    margin-top: auto;
+}
+
+.product-info input[type="number"] {
+    max-width: 70px;
+    margin-right: 8px;
+}
+
+.product-info button {
+    padding: 6px 10px;
+    font-size: 14px;
+}
