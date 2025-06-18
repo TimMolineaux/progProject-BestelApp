@@ -45,6 +45,7 @@ body {
     display: block;
     margin-bottom: 15px;
 }
+
 .login-box p {
     font-size: 0.95em;
     margin-bottom: 10px;
@@ -57,31 +58,6 @@ body {
 
 .login-box button span {
     font-weight: bold;
-}
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    background-color: #fff;
-}
-
-.topbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    border-bottom: 1px solid #ccc;
-}
-
-.logo {
-    height: 40px;
-}
-
-.nav-buttons button {
-    margin-left: 10px;
-    padding: 8px 16px;
-    background-color: #f0f0f0;
-    border: 1px solid #aaa;
-    cursor: pointer;
 }
 
 .title {
@@ -138,18 +114,4 @@ th, td {
     font-size: 18px;
     padding: 5px 10px;
     cursor: pointer;
-}
-body {
-    font-family: Arial, sans-serif;
-}
-
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-}
-
-nav button {
-    margin: 0 5px;
 }

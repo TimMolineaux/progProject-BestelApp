@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <title>Productbeheer</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
 </head>
-<body>
+<body class="productbeheer">
 
 <div th:replace="fragments/navbar :: navbar"></div>
 
@@ -21,7 +22,7 @@
             <th>Productnaam</th>
             <th>Categorie</th>
             <th>Voorraad</th>
-            <th>Acties</th>
+            <th colspan="2">Acties</th>
         </tr>
         </thead>
         <tbody>

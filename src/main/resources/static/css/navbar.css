@@ -1,104 +1,23 @@
-.nav-toggle, .cart-toggle, .user-toggle {
-    display: none;
-}
-
-
-.nav-toggle-label {
-    display: none;
-    cursor: pointer;
-    width: 30px;
-    height: 25px;
-    position: relative;
-}
-
-.nav-toggle-label span,
-.nav-toggle-label span::before,
-.nav-toggle-label span::after {
-    display: block;
-    background: #0077c8;
-    height: 3px;
-    width: 100%;
-    border-radius: 2px;
-    position: absolute;
-}
-
-.nav-toggle-label span {
-    top: 50%;
-    transform: translateY(-50%);
-}
-
-.nav-toggle-label span::before {
-    content: '';
-    top: -10px;
-}
-
-.nav-toggle-label span::after {
-    content: '';
-    top: 10px;
-}
-
-.nav-menu {
+.navbar .topbar {
     display: flex;
-    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ccc;
 }
 
-@media (max-width: 768px) {
-    .nav-toggle-label {
-        display: block;
-    }
-    .nav-menu {
-        display: none;
-        flex-direction: column;
-        width: 100%;
-        background: white;
-        position: absolute;
-        top: 60px;
-        left: 0;
-        border-top: 1px solid #ddd;
-    }
-    #nav-toggle:checked ~ .nav-menu {
-        display: flex;
-    }
+.navbar .topbar img {
+    height: 40px;
 }
 
-.dropdown-menu {
-    display: none;
-    position: absolute;
-    background: white;
-    border: 1px solid #ddd;
-    padding: 0.5rem 1rem;
-    min-width: 200px;
-    z-index: 10;
-}
-
-.dropdown-label {
+.navbar .nav-buttons button {
+    margin-left: 10px;
+    padding: 8px 16px;
+    background-color: #f0f0f0;
+    border: 1px solid #aaa;
     cursor: pointer;
-    position: relative;
 }
 
-.dropdown-toggle {
-    display: none;
-}
-
-.dropdown-toggle:checked + .dropdown-menu {
-    display: block;
-}
-
-.dropdown-container {
-    position: relative;
-}
-
-.nav-item {
-    position: relative;
-    padding: 0 0.5rem;
-}
-
-.nav-link {
-    color: #0077c8;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.nav-link:hover {
-    color: #005fa3;
+.navbar nav button {
+    margin: 0 5px;
 }
