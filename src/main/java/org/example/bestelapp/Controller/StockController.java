@@ -26,12 +26,34 @@ public class StockController {
     }
 
     @GetMapping
-    public String showStockOverview(Model model) {
-        List<Product> producten = productDAO.findAll();
-        model.addAttribute("producten", producten);
+    public String showStockOverview(@RequestParam(required = false) Integer category,
+                                    @RequestParam(required = false) String search,
+                                    Model model) {
+        List<Product> producten;
 
+        if (search != null && !search.isEmpty()) {
+            producten = productDAO.findByNameContainingIgnoreCase(search);
+        } else if (category != null && category != 0) {
+            producten = productDAO.findByCategoryId(category);
+        } else {
+            producten = productDAO.findAll();
+        }
+
+        var productenPerCategorie = new java.util.LinkedHashMap<String, List<Product>>();
+        categoryDAO.findAll().forEach(cat -> {
+            var perCategorie = producten.stream()
+                    .filter(p -> p.getCategory().getId() == cat.getId())
+                    .toList();
+            if (!perCategorie.isEmpty()) {
+                productenPerCategorie.put(cat.getName(), perCategorie);
+            }
+        });
+
+        model.addAttribute("productenPerCategorie", productenPerCategorie);
         model.addAttribute("nieuwProduct", new Product());
         model.addAttribute("categories", categoryDAO.findAll());
+        model.addAttribute("selectedCategory", category);
+        model.addAttribute("searchTerm", search);
 
         return "productbeheer";
     }
@@ -66,13 +88,15 @@ public class StockController {
         return "redirect:/stock";
     }
 
-    @PostMapping("/togglePopular/{id}")
-    public String togglePopular(@PathVariable int id, RedirectAttributes redirectAttributes) {
+    @PostMapping("/add/{id}")
+    public String addStock(@PathVariable int id,
+                           @RequestParam("extraStock") int extraStock,
+                           RedirectAttributes redirectAttributes) {
         productDAO.findById(id).ifPresent(product -> {
-            product.setPopular(!product.isPopular());
+            product.setStock(product.getStock() + extraStock);
             productDAO.save(product);
         });
-        redirectAttributes.addFlashAttribute("success", "Status aangepast.");
+        redirectAttributes.addFlashAttribute("success", "Voorraad succesvol aangevuld.");
         return "redirect:/stock";
     }
 

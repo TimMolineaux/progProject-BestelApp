@@ -55,14 +55,12 @@ public class ProductViewController {
             allProducts = productDAO.findAll();
         }
 
-        List<Product> popularProducts = allProducts.stream()
-                .filter(Product::isPopular)
-                .toList();
+        List<Product> popularProducts = productDAO.findTop6ByOrderByTimesOrderedDesc();
 
         Map<String, List<Product>> productsByCategory = new LinkedHashMap<>();
         categoryDAO.findAll().forEach(cat -> {
             List<Product> categoryProducts = allProducts.stream()
-                    .filter(p -> p.getCategory().getId() == cat.getId() && !p.isPopular())
+                    .filter(p -> p.getCategory().getId() == cat.getId())
                     .toList();
             if (!categoryProducts.isEmpty()) {
                 productsByCategory.put(cat.getName(), categoryProducts);
@@ -140,7 +138,7 @@ public class ProductViewController {
         order.setUser(user);
         order.setDate(LocalDate.now());
         order.setStatus(false);
-        order.setPickupLocation(pickupLocation); // 👈 toevoegen!
+        order.setPickupLocation(pickupLocation);
 
         List<OrderItem> orderItems = new ArrayList<>();
 
@@ -152,8 +150,12 @@ public class ProductViewController {
                 item.setProduct(product);
                 item.setQuantity(entry.getValue());
                 orderItems.add(item);
+
+                product.setTimesOrdered(product.getTimesOrdered() + entry.getValue());
+                productDAO.save(product);
             }
         }
+
 
         order.setOrderItems(orderItems);
         orderDAO.save(order);

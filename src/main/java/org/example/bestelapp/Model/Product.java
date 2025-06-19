@@ -21,18 +21,18 @@ public class Product {
     @NotNull
     private int stock;
 
-    private boolean popular;
+    private int timesOrdered;
 
     private String image;
 
     public Product() {}
 
-    public Product(int id, String name, Category category, int stock, boolean popular, String image) {
+    public Product(int id, String name, Category category, int stock, int timesOrdered, String image) {
         this.id = id;
         this.name = name;
         this.category = category;
         this.stock = stock;
-        this.popular = popular;
+        this.timesOrdered = timesOrdered;
         this.image = image;
     }
 
@@ -64,12 +64,12 @@ public class Product {
         this.stock = stock;
     }
 
-    public boolean isPopular() {
-        return popular;
+    public int getTimesOrdered() {
+        return timesOrdered;
     }
 
-    public void setPopular(boolean popular) {
-        this.popular = popular;
+    public void setTimesOrdered(int timesOrdered) {
+        this.timesOrdered = timesOrdered;
     }
 
     public String getImage() {

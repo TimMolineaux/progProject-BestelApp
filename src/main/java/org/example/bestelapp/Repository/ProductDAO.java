@@ -8,4 +8,5 @@ import java.util.List;
 public interface ProductDAO extends JpaRepository<Product, Integer> {
     List<Product> findByNameContainingIgnoreCase(String name);
     List<Product> findByCategoryId(int categoryId);
+    List<Product> findTop6ByOrderByTimesOrderedDesc();
 }
