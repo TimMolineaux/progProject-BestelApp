@@ -6,6 +6,7 @@
   <link rel="stylesheet" th:href="@{/css/style.css}">
   <link rel="stylesheet" th:href="@{/css/navbar.css}">
 </head>
+<body>
 <body class="bestellingsbeheer">
 
 <div th:replace="fragments/navbar :: navbar"></div>
@@ -25,6 +26,8 @@
   <span th:text="${order.date != null} ? ${#temporals.format(order.date, 'dd-MM-yyyy')} : ''"></span>
   &nbsp;&nbsp;
   <span>Status: <strong th:text="${order.status ? 'Voltooid' : 'In behandeling'}"></strong></span>
+  &nbsp;&nbsp;
+  <span>Afhaallocatie: <strong th:text="${order.pickupLocation != null && order.pickupLocation != '' ? order.pickupLocation : 'Niet ingesteld'}"></strong></span>
 
   <table style="width: 100%; margin-top: 10px; border-collapse: collapse;">
     <thead>

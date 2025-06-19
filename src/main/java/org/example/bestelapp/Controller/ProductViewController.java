@@ -26,11 +26,11 @@ import java.util.*;
 @RequestMapping("/index")
 public class ProductViewController {
 
-    private ProductDAO productDAO;
-    private CategoryDAO categoryDAO;
+    private final ProductDAO productDAO;
+    private final CategoryDAO categoryDAO;
 
-    private OrderDAO orderDAO;
-    private UserDAO userDAO;
+    private final OrderDAO orderDAO;
+    private final UserDAO userDAO;
 
     public ProductViewController(ProductDAO productDAO, CategoryDAO categoryDAO, OrderDAO orderDAO, UserDAO userDAO) {
         this.productDAO = productDAO;
@@ -94,8 +94,8 @@ public class ProductViewController {
 
     @PostMapping("/add")
     public String AddToCart(@RequestParam("productId") Integer productId,
-                                       @RequestParam("aantal") Integer aantal,
-                                       HttpSession session) {
+                            @RequestParam("aantal") Integer aantal,
+                            HttpSession session) {
 
         Map<Integer, Integer> cart = (Map<Integer, Integer>) session.getAttribute("cart");
         if (cart == null) {
@@ -110,7 +110,7 @@ public class ProductViewController {
 
     @PostMapping("/remove")
     public String RemoveFromCart(@RequestParam("productId") Integer productId,
-                                         HttpSession session) {
+                                 HttpSession session) {
         Map<Integer, Integer> cart = (Map<Integer, Integer>) session.getAttribute("cart");
         if (cart != null) {
             cart.remove(productId);
@@ -120,7 +120,8 @@ public class ProductViewController {
     }
 
     @PostMapping("/placeorder")
-    public String ProcesOrder(HttpSession session) {
+    public String ProcesOrder(@RequestParam("pickupLocation") String pickupLocation,
+                              HttpSession session) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String email = (principal instanceof UserDetails) ? ((UserDetails) principal).getUsername() : principal.toString();
         User user = userDAO.findByEmail(email)
@@ -139,6 +140,7 @@ public class ProductViewController {
         order.setUser(user);
         order.setDate(LocalDate.now());
         order.setStatus(false);
+        order.setPickupLocation(pickupLocation); // 👈 toevoegen!
 
         List<OrderItem> orderItems = new ArrayList<>();
 

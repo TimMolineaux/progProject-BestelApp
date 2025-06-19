@@ -35,8 +35,7 @@ public class DataSeeder {
                 if (adminRole.isPresent()) {
                     User admin = new User();
                     admin.setEmail("admin@aquafin.be");
-                    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-                    admin.setPassword(encoder.encode("admin123"));
+                    admin.setPassword("$2a$10$r3/LRgcvIvUKW66VQnc5eOP7nFXWhMcwJnwsdxwto9iqp1TP9OUUu");
                     admin.setRole(adminRole.get());
 
                     userDAO.save(admin);

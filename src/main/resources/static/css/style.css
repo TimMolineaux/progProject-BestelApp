@@ -4,6 +4,7 @@ body {
     font-family: Arial, sans-serif;
     text-align: center;
     margin: 0;
+    margin-top: 40px;
 }
 
 /* LOGO */
@@ -34,6 +35,7 @@ body {
     border: none;
     border-radius: 4px;
 }
+
 
 
 .login-box .forgot {
@@ -235,7 +237,6 @@ body button:not(.nav-buttons button) {
     cursor: pointer;
 }
 
-
 button.btn-danger {
     background-color: #dc3545;
 }
@@ -334,8 +335,125 @@ button.btn-outline-primary:hover {
     background-color: #0d6efd;
     color: white;
 }
+.active-category {
+    font-weight: bold;
+    color: darkred;
+    text-decoration: underline;
+}
+/* Productpagina container en layout */
+.page-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
 
-/*tinus-css*/
+/* Sidebar */
+aside {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    width: 200px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+aside ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+aside ul li {
+    margin-bottom: 10px;
+}
+
+aside ul li a {
+    color: #333;
+    display: block;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+aside ul li a:hover {
+    background-color: #ececec;
+}
+
+aside ul li a.active-category {
+    background-color: #ffe6e6;
+    color: darkred;
+    font-weight: bold;
+}
+
+/* Producten grid */
+.products-grid {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+/* Productkaart */
+.product-card {
+    flex: 1 1 calc(33.333% - 20px);
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.product-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.product-info {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+}
+
+.product-info h5 {
+    font-size: 1.1rem;
+    margin: 0 0 0.5rem;
+    color: #333;
+}
+
+.product-info .price {
+    font-weight: bold;
+    margin-top: 0.5rem;
+    color: #28a745;
+}
+
+.product-info form {
+    margin-top: auto;
+}
+
+.product-info input[type="number"] {
+    max-width: 70px;
+    margin-right: 8px;
+}
+
+.product-info button {
+    padding: 6px 10px;
+    font-size: 14px;
+}
 
 .productbeheer {
     font-family: Arial, sans-serif;
@@ -569,7 +687,9 @@ body.bestellingsbeheer table {
     border-collapse: collapse;
     margin-top: 15px;
     background-color: #fff;
+    table-layout: auto; /* <-- dit is de kern om kolommen aan inhoud aan te passen */
 }
+
 
 body.bestellingsbeheer th {
     background-color: #cce6ff;

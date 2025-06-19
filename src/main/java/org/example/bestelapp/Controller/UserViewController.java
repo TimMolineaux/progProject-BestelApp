@@ -4,6 +4,8 @@ import org.example.bestelapp.Model.Role;
 import org.example.bestelapp.Model.User;
 import org.example.bestelapp.Repository.RoleDAO;
 import org.example.bestelapp.Repository.UserDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +18,12 @@ public class UserViewController {
 
     private final UserDAO userDAO;
     private final RoleDAO roleDAO;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserViewController(UserDAO userDAO, RoleDAO roleDAO) {
+    public UserViewController(UserDAO userDAO, RoleDAO roleDAO, PasswordEncoder passwordEncoder) {
         this.userDAO = userDAO;
         this.roleDAO = roleDAO;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
@@ -38,6 +42,8 @@ public class UserViewController {
         Role role = roleDAO.findByName(roleName);
         if (role != null) {
             user.setRole(role);
+            String encodedPassword = passwordEncoder.encode(user.getPassword());
+            user.setPassword(encodedPassword);
             userDAO.save(user);
         }
 
