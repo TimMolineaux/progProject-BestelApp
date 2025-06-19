@@ -120,7 +120,8 @@ public class ProductViewController {
     }
 
     @PostMapping("/placeorder")
-    public String ProcesOrder(HttpSession session) {
+    public String ProcesOrder(@RequestParam("pickupLocation") String pickupLocation,
+                              HttpSession session) {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String email = (principal instanceof UserDetails) ? ((UserDetails) principal).getUsername() : principal.toString();
         User user = userDAO.findByEmail(email)
@@ -139,6 +140,7 @@ public class ProductViewController {
         order.setUser(user);
         order.setDate(LocalDate.now());
         order.setStatus(false);
+        order.setPickupLocation(pickupLocation); // 👈 toevoegen!
 
         List<OrderItem> orderItems = new ArrayList<>();
 
@@ -160,5 +162,6 @@ public class ProductViewController {
 
         return "redirect:/index";
     }
+
 
 }

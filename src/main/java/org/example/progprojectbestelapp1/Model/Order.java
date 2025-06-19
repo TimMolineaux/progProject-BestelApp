@@ -16,6 +16,7 @@ public class Order {
     private int id;
 
     private LocalDate date;
+    private String pickupLocation;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
@@ -74,5 +75,11 @@ public class Order {
 
     public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
+    }
+    public String getPickupLocation() {
+        return pickupLocation;
+    }
+    public void setPickupLocation(String pickupLocation) {
+        this.pickupLocation = pickupLocation;
     }
 }

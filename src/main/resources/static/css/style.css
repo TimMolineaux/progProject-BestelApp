@@ -226,7 +226,8 @@ th, td {
 }
 
 /* Buttons */
-button {
+/* Algemene button stijl, behalve binnen navbar */
+body button:not(.nav-buttons button) {
     background-color: #0d6efd; /* Bootstrap primary blauw */
     border: none;
     color: white;
@@ -452,4 +453,282 @@ aside ul li a.active-category {
 .product-info button {
     padding: 6px 10px;
     font-size: 14px;
+}
+
+.productbeheer {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f5faff;
+    color: #003366;
+    text-align: left;
+}
+
+.productbeheer h2 {
+    color: steelblue;
+    margin-bottom: 20px;
+}
+
+.productbeheer table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.productbeheer table,
+.productbeheer th,
+.productbeheer td {
+    border: 1px solid #b3d1ff;
+}
+
+.productbeheer th {
+    background-color: #cce6ff;
+    color: #003366;
+    padding: 10px;
+}
+
+.productbeheer td {
+    padding: 8px;
+    text-align: center;
+}
+
+.productbeheer form {
+    margin-top: 20px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.productbeheer form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.productbeheer form input[type="text"],
+.productbeheer form input[type="number"],
+.productbeheer form select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #b3d1ff;
+    border-radius: 4px;
+    margin-top: 5px;
+}
+
+.productbeheer button.btn-primary {
+    padding: 8px 16px;
+    border: none;
+    background-color: #0066cc;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.productbeheer button.btn-primary:hover {
+    background-color: #004c99;
+}
+
+.productbeheer .alert {
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.productbeheer .alert-success {
+    background-color: #e6f9e6;
+    color: #2d662d;
+    border: 1px solid #88cc88;
+}
+
+.productbeheer .alert-danger {
+    background-color: #ffe6e6;
+    color: #b30000;
+    border: 1px solid #ff9999;
+}
+
+.productbeheer button[title="Toggle popular"] {
+    background: none;
+    font-size: 20px;
+    border: none;
+    color: #ffcc00;
+    cursor: pointer;
+}
+
+.beheer-main {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 50px;
+    padding: 0 20px;
+}
+
+.beheer-gedeelte {
+    width: 40%;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.beheer-titel {
+    color: #0066cc;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.gebruiker-regel {
+    margin-bottom: 15px;
+}
+
+.gebruiker-formulier {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.delete-knop {
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 4px;
+}
+
+.delete-knop:hover {
+    background-color: #004c99;
+}
+
+.toevoeg-formulier {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.toevoeg-formulier input,
+.toevoeg-formulier select {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.toevoeg-knop {
+    background-color: #0066cc;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.toevoeg-knop:hover {
+    background-color: #004c99;
+}
+
+
+
+body.bestellingsbeheer {
+    background-color: #f5faff;
+    font-family: Arial, sans-serif;
+    color: #003366;
+    margin: 0;
+    padding: 0 20px 50px;
+}
+
+body.bestellingsbeheer h2 {
+    text-align: center;
+    margin: 40px 0 30px;
+    font-size: 1.8em;
+    color: steelblue;
+}
+
+body.bestellingsbeheer .alert {
+    padding: 12px 15px;
+    border-radius: 5px;
+    max-width: 700px;
+    margin: 0 auto 20px;
+    font-weight: bold;
+}
+
+body.bestellingsbeheer .alert-success {
+    background-color: #e6f9e6;
+    color: #2d662d;
+    border: 1px solid #88cc88;
+}
+
+body.bestellingsbeheer .alert-danger {
+    background-color: #ffe6e6;
+    color: #b30000;
+    border: 1px solid #ff9999;
+}
+
+body.bestellingsbeheer .order {
+    border: 1px solid #b3d1ff;
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body.bestellingsbeheer .order strong {
+    color: #003366;
+}
+
+body.bestellingsbeheer table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background-color: #fff;
+    table-layout: auto; /* <-- dit is de kern om kolommen aan inhoud aan te passen */
+}
+
+
+body.bestellingsbeheer th {
+    background-color: #cce6ff;
+    color: #003366;
+    padding: 10px;
+    border-bottom: 1px solid #b3d1ff;
+    text-align: left;
+}
+
+body.bestellingsbeheer td {
+    padding: 10px;
+    border-bottom: 1px solid #e0eaff;
+}
+
+body.bestellingsbeheer button.btn-primary,
+body.bestellingsbeheer button.btn-danger {
+    padding: 10px 15px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+}
+
+body.bestellingsbeheer button.btn-primary {
+    background-color: #0066cc;
+    color: white;
+}
+
+body.bestellingsbeheer button.btn-primary:hover {
+    background-color: #004c99;
+}
+
+body.bestellingsbeheer button.btn-danger {
+    background-color: #ff4d4d;
+    color: white;
+}
+
+body.bestellingsbeheer button.btn-danger:hover {
+    background-color: #cc0000;
 }
