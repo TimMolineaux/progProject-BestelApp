@@ -5,72 +5,179 @@
     <title>Productbeheer</title>
     <link rel="stylesheet" th:href="@{/css/style.css}">
     <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <style>
+        .active-category {
+            background-color: #fbdada;
+            font-weight: bold;
+            color: #c70000;
+        }
+        aside {
+            width: 200px;
+            margin-right: 40px;
+        }
+        main {
+            display: flex;
+        }
+
+        /* Modal styles */
+        #addProductModal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+        }
+    </style>
 </head>
 <body class="productbeheer">
 
 <div th:replace="fragments/navbar :: navbar"></div>
 
 <main style="margin: 40px;">
-    <h2 style="color: steelblue;">Overzicht van alle producten</h2>
+    <div style="display: flex; gap: 2rem; align-items: flex-start; margin-top: 2rem;">
 
-    <div th:if="${deleteError}" class="alert alert-danger" th:text="${deleteError}"></div>
-    <div th:if="${deleteSuccess}" class="alert alert-success" th:text="${deleteSuccess}"></div>
-    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
-    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+    <!-- Sidebar categorieën -->
+    <aside>
+        <h3>Categorieën</h3>
+        <ul style="list-style: none; padding-left: 0;">
+            <li>
+                <a th:href="@{/stock}"
+                   th:classappend="${selectedCategory == null} ? 'active-category'"
+                   style="display: block; padding: 0.5rem 0;">Alle categorieën</a>
+            </li>
+            <li th:each="cat : ${categories}">
+                <a th:href="@{/stock(category=${cat.id})}"
+                   th:text="${cat.name}"
+                   th:classappend="${selectedCategory == cat.id} ? 'active-category'"
+                   style="display: block; padding: 0.5rem 0;"></a>
+            </li>
+        </ul>
+    </aside>
 
-    <table>
-        <thead>
-        <tr>
-            <th>Productnaam</th>
-            <th>Categorie</th>
-            <th>Voorraad</th>
-            <th colspan="2">Acties</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="product : ${producten}">
-            <td th:text="${product.name}">Naam</td>
-            <td th:text="${product.category.name}">Categorie</td>
+    <!-- Rechter content -->
+    <div style="flex: 1;">
+        <form method="get" action="/stock" style="margin-bottom: 1.5rem;">
+            <input type="search" name="search" placeholder="Zoek product..." th:value="${searchTerm}" style="padding: 0.4rem; width: 100%;" />
+        </form>
+        <!-- Product toevoegen knop -->
+        <button onclick="document.getElementById('addProductModal').style.display='block'"
+                style="margin-bottom: 1.5rem; padding: 0.5rem 1rem; background-color: steelblue; color: white; border: none; border-radius: 5px;">
+            ➕ Product toevoegen
+        </button>
 
-            <!-- Voorraad + formulier voor extra stock -->
-            <td>
-                <span th:text="${product.stock}">0</span> stuks<br/>
-                <form th:action="@{/stock/add/{id}(id=${product.id})}" method="post" style="margin-top: 5px;">
-                    <input type="number" name="extraStock" min="1" placeholder="Aantal toevoegen" required style="width: 100px;" />
-                    <button type="submit">➕</button>
-                </form>
-            </td>
+        <h2 style="color: steelblue;">Overzicht van alle producten</h2>
 
-            <!-- Toggle populair -->
-            <td>
-                <form th:action="@{/stock/togglePopular/{id}(id=${product.id})}" method="post" style="display:inline;">
-                    <button type="submit"
-                            th:text="${product.popular} ? '⭐' : '☆'"
-                            title="Toggle popular">
-                    </button>
-                </form>
-            </td>
+        <div th:if="${deleteError}" class="alert alert-danger" th:text="${deleteError}"></div>
+        <div th:if="${deleteSuccess}" class="alert alert-success" th:text="${deleteSuccess}"></div>
+        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-            <!-- Verwijder product -->
-            <td>
-                <form th:action="@{/stock/delete/{id}(id=${product.id})}" method="post">
-                    <button type="submit" onclick="return confirm('Ben je zeker dat je dit product wil verwijderen?')">🗑️ Verwijder</button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+        <!-- 🔄 Nieuwe weergave per categorie -->
+        <div th:if="${!productenPerCategorie.isEmpty()}">
+            <div th:each="entry : ${productenPerCategorie}">
+                <h3 th:text="${entry.key}" style="margin-top: 2rem; border-bottom: 1px solid #ccc;">Categorie: </h3>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Productnaam</th>
+                        <th>Voorraad</th>
+                        <th colspan="2">Acties</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="product : ${entry.value}">
+                        <td th:text="${product.name}">Naam</td>
+                        <td>
+                            <span th:text="${product.stock}">0</span> stuks<br/>
+                            <form th:action="@{/stock/add/{id}(id=${product.id})}" method="post" style="margin-top: 5px;">
+                                <input type="number" name="extraStock" min="1" placeholder="Aantal toevoegen" required style="width: 100px;" />
+                                <button type="submit">➕</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form th:action="@{/stock/togglePopular/{id}(id=${product.id})}" method="post" style="display:inline;">
+                                <button type="submit"
+                                        th:text="${product.popular} ? '⭐' : '☆'"
+                                        title="Toggle popular">
+                                </button>
+                            </form>
+                        </td>
+                        <td>
+                            <form th:action="@{/stock/delete/{id}(id=${product.id})}" method="post">
+                                <button type="submit" onclick="return confirm('Ben je zeker dat je dit product wil verwijderen?')">🗑️ Verwijder</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-    <section style="flex: 1; margin-top: 40px;">
-        <h2 style="color: steelblue;">Product toevoegen</h2>
+        <!-- 🔄 Nieuwe weergave per categorie -->
+        <div th:if="${!productenPerCategorie.isEmpty()}">
+            <div th:each="entry : ${productenPerCategorie}">
+                <h3 th:text="${entry.key}" style="margin-top: 2rem; border-bottom: 1px solid #ccc;">Categorie: </h3>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Productnaam</th>
+                        <th>Categorie</th>
+                        <th>Voorraad</th>
+                        <th colspan="2">Acties</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="product : ${entry.value}">
+                        <td th:text="${product.name}">Naam</td>
+                        <td th:text="${product.category.name}">Categorie</td>
+                        <td>
+                            <span th:text="${product.stock}">0</span> stuks<br/>
+                            <form th:action="@{/stock/add/{id}(id=${product.id})}" method="post" style="margin-top: 5px;">
+                                <input type="number" name="extraStock" min="1" placeholder="Aantal toevoegen" required style="width: 100px;" />
+                                <button type="submit">➕</button>
+                            </form>
+                        </td>
+                        <td>
+                            <form th:action="@{/stock/togglePopular/{id}(id=${product.id})}" method="post" style="display:inline;">
+                                <button type="submit"
+                                        th:text="${product.popular} ? '⭐' : '☆'"
+                                        title="Toggle popular">
+                                </button>
+                            </form>
+                        </td>
+                        <td>
+                            <form th:action="@{/stock/delete/{id}(id=${product.id})}" method="post">
+                                <button type="submit" onclick="return confirm('Ben je zeker dat je dit product wil verwijderen?')">🗑️ Verwijder</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
+
+</main>
+
+<!-- Modal (popup) voor product toevoegen -->
+<div id="addProductModal">
+    <div class="modal-content">
+        <h2>Nieuw product toevoegen</h2>
         <form th:action="@{/stock/new}" method="post" th:object="${nieuwProduct}">
             <label>Categorie:<br>
-                <select th:field="*{category}">
-                    <option th:each="cat : ${categories}"
-                            th:value="${cat.id}"
-                            th:text="${cat.name}">
-                    </option>
+                <select th:field="*{category}" required>
+                    <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}"></option>
                 </select>
             </label><br><br>
 
@@ -86,10 +193,11 @@
                 <input type="checkbox" th:field="*{popular}"> Populair
             </label><br><br>
 
-            <button type="submit" class="btn-primary">Aanmaken</button>
+            <button type="submit" style="background-color: steelblue; color: white; padding: 0.5rem 1rem; border: none;">Aanmaken</button>
+            <button type="button" onclick="document.getElementById('addProductModal').style.display='none'"
+                    style="margin-left: 10px;">Annuleren</button>
         </form>
-    </section>
-</main>
-
+    </div>
+</div>
 </body>
 </html>

@@ -10,7 +10,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/stock")
@@ -28,11 +31,41 @@ public class StockController {
 
     // 🗂️ Toon overzicht van alle producten
     @GetMapping
-    public String showStockOverview(Model model) {
-        List<Product> producten = productDAO.findAll();
-        model.addAttribute("producten", producten);
+    public String showStockOverview(@RequestParam(required = false) Integer category,
+                                    Model model) {
+
+        List<Product> producten;
+
+        if (category != null && category != 0) {
+            producten = productDAO.findByCategoryId(category);
+        } else {
+            producten = productDAO.findAll();
+        }
+
+        // Sorteer alfabetisch op naam
+        producten.sort(Comparator.comparing(p -> p.getName().toLowerCase()));
+
+        // Sorteer categorieën ook alfabetisch
+        List<org.example.progprojectbestelapp1.Model.Category> gesorteerdeCategorieen = categoryDAO.findAll().stream()
+                .sorted(Comparator.comparing(c -> c.getName().toLowerCase()))
+                .toList();
+
+        // Groepeer producten per categorie
+        Map<String, List<Product>> productenPerCategorie = new LinkedHashMap<>();
+        for (var cat : gesorteerdeCategorieen) {
+            List<Product> catProducten = producten.stream()
+                    .filter(p -> p.getCategory() != null && p.getCategory().getId() == cat.getId())
+                    .toList();
+            if (!catProducten.isEmpty()) {
+                productenPerCategorie.put(cat.getName(), catProducten);
+            }
+        }
+
+        model.addAttribute("producten", producten); // voor backwards compatibility
+        model.addAttribute("productenPerCategorie", productenPerCategorie);
+        model.addAttribute("categories", gesorteerdeCategorieen);
+        model.addAttribute("selectedCategory", category);
         model.addAttribute("nieuwProduct", new Product());
-        model.addAttribute("categories", categoryDAO.findAll());
         return "productbeheer";
     }
 
@@ -100,5 +133,6 @@ public class StockController {
         }
 
         return "redirect:/stock";
+
     }
 }
