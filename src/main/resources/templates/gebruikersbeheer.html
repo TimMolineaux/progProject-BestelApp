@@ -27,6 +27,7 @@
         <form th:action="@{/users/add}" method="post" th:object="${newUser}" class="toevoeg-formulier">
             <label>E-Mail:</label>
             <input type="email" th:field="*{email}" required>
+            <div th:if="${emailError}" th:text="${emailError}" class="error-message"></div>
 
             <label>Wachtwoord:</label>
             <input type="password" th:field="*{password}" required>

@@ -4,7 +4,6 @@ import org.example.bestelapp.Model.Role;
 import org.example.bestelapp.Model.User;
 import org.example.bestelapp.Repository.RoleDAO;
 import org.example.bestelapp.Repository.UserDAO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,27 +32,33 @@ public class UserViewController {
         model.addAttribute("users", users);
         model.addAttribute("roles", roles);
         model.addAttribute("newUser", new User());
-
         return "gebruikersbeheer";
     }
 
     @PostMapping("/add")
-    public String addUser(@ModelAttribute User user, @RequestParam String roleName) {
+    public String addUser(@ModelAttribute User user, @RequestParam String roleName, Model model) {
+        if (userDAO.findByEmail(user.getEmail()).isPresent()) {
+            List<User> users = userDAO.findAll();
+            List<Role> roles = roleDAO.findAll();
+            model.addAttribute("users", users);
+            model.addAttribute("roles", roles);
+            model.addAttribute("newUser", user);
+            model.addAttribute("emailError", "Deze e-mail wordt al gebruikt.");
+            return "gebruikersbeheer";
+        }
+
         Role role = roleDAO.findByName(roleName);
         if (role != null) {
             user.setRole(role);
-            String encodedPassword = passwordEncoder.encode(user.getPassword());
-            user.setPassword(encodedPassword);
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             userDAO.save(user);
         }
-
         return "redirect:/users";
     }
 
     @PostMapping("/delete/{id}")
     public String deleteUser(@PathVariable int id) {
         userDAO.deleteById(id);
-
         return "redirect:/users";
     }
 
