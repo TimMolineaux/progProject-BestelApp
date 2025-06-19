@@ -34,11 +34,12 @@ public class DataSeeder {
                 if (adminRole.isPresent()) {
                     User admin = new User();
                     admin.setEmail("admin@aquafin.be");
-                    admin.setPassword("admin123"); // nog versleutelen in je echte app
+                    admin.setPassword("$2a$10$N9qo8uLOickgx2ZMRZo4ieWbkQOJdRfZGy/1/KX1MHiQxMIEQ3yNq");
                     admin.setRole(adminRole.get());
 
                     userDAO.save(admin);
                 }
+
             }
 
             if (categoryDAO.count() == 0) {
