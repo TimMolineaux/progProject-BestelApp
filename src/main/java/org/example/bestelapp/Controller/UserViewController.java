@@ -32,6 +32,7 @@ public class UserViewController {
         model.addAttribute("users", users);
         model.addAttribute("roles", roles);
         model.addAttribute("newUser", new User());
+
         return "gebruikersbeheer";
     }
 
@@ -40,25 +41,55 @@ public class UserViewController {
         if (userDAO.findByEmail(user.getEmail()).isPresent()) {
             List<User> users = userDAO.findAll();
             List<Role> roles = roleDAO.findAll();
+
             model.addAttribute("users", users);
             model.addAttribute("roles", roles);
             model.addAttribute("newUser", user);
             model.addAttribute("emailError", "Deze e-mail wordt al gebruikt.");
+
             return "gebruikersbeheer";
         }
 
         Role role = roleDAO.findByName(roleName);
         if (role != null) {
             user.setRole(role);
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            String encodedPassword = passwordEncoder.encode(user.getPassword());
+            user.setPassword(encodedPassword);
             userDAO.save(user);
         }
+
         return "redirect:/users";
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteUser(@PathVariable int id) {
+    public String deleteUser(@PathVariable int id, Model model) {
+        if (id == 1) {
+            List<User> users = userDAO.findAll();
+            List<Role> roles = roleDAO.findAll();
+
+            model.addAttribute("users", users);
+            model.addAttribute("roles", roles);
+            model.addAttribute("newUser", new User());
+            model.addAttribute("deleteError", "De basis admin kan niet verwijderd worden.");
+
+            return "gebruikersbeheer";
+        }
+
         userDAO.deleteById(id);
+
+        return "redirect:/users";
+    }
+
+    @PostMapping("/updateRole/{id}")
+    public String updateUserRole(@PathVariable int id, @RequestParam String roleName) {
+        User user = userDAO.findById(id).orElse(null);
+        if (user != null) {
+            Role role = roleDAO.findByName(roleName);
+            if (role != null) {
+                user.setRole(role);
+                userDAO.save(user);
+            }
+        }
         return "redirect:/users";
     }
 

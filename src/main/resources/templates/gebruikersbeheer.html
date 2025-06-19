@@ -14,10 +14,24 @@
         <h2 class="beheer-titel">Gebruikersbeheer</h2>
         <div th:if="${users.empty}">Geen gebruikers gevonden.</div>
         <div th:each="user : ${users}" class="gebruiker-regel">
-            <form th:action="@{/users/delete/{id}(id=${user.id})}" method="post" class="gebruiker-formulier">
+            <form th:action="@{/users/updateRole/{id}(id=${user.id})}" method="post" class="gebruiker-formulier">
                 <span th:text="${user.email}">user@mail.com</span>
-                Rol: <input type="text" th:value="${user.role.name}" readonly>
-                <button type="submit" class="delete-knop">🗑️</button>
+                <label>Rol:</label>
+                <select name="roleName">
+                    <option th:each="role : ${roles}"
+                            th:value="${role.name}"
+                            th:text="${role.name}"
+                            th:selected="${role.name == user.role.name}">
+                    </option>
+                </select>
+                <button type="submit" class="update-role-knop">Opslaan</button>
+                <button type="submit"
+                        formaction="#"
+                        th:formaction="@{/users/delete/{id}(id=${user.id})}"
+                        formmethod="post"
+                        class="delete-knop"
+                        th:if="${user.id != 1}">🗑️
+                </button>
             </form>
         </div>
     </section>
