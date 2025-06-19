@@ -48,14 +48,14 @@ public class ProductViewController {
         List<Product> allProducts;
 
         if (search != null && !search.isEmpty()) {
-            allProducts = productDAO.findByNameContainingIgnoreCase(search);
+            allProducts = productDAO.findByNameContainingIgnoreCaseAndArchivedFalse(search);
         } else if (category != null && category != 0) {
-            allProducts = productDAO.findByCategoryId(category);
+            allProducts = productDAO.findByCategoryIdAndArchivedFalse(category);
         } else {
-            allProducts = productDAO.findAll();
+            allProducts = productDAO.findByArchivedFalse();
         }
 
-        List<Product> popularProducts = productDAO.findTop6ByOrderByTimesOrderedDesc();
+        List<Product> popularProducts = productDAO.findTop6ByArchivedFalseOrderByTimesOrderedDesc();
 
         Map<String, List<Product>> productsByCategory = new LinkedHashMap<>();
         categoryDAO.findAll().forEach(cat -> {
@@ -73,7 +73,9 @@ public class ProductViewController {
         if (cart != null) {
             for (Map.Entry<Integer, Integer> entry : cart.entrySet()) {
                 productDAO.findById(entry.getKey()).ifPresent(product -> {
-                    cartItems.put(product, entry.getValue());
+                    if (!product.isArchived()) {
+                        cartItems.put(product, entry.getValue());
+                    }
                 });
             }
         }
@@ -137,7 +139,7 @@ public class ProductViewController {
         Order order = new Order();
         order.setUser(user);
         order.setDate(LocalDate.now());
-        order.setStatus(false);
+        order.setStatus("pending");
         order.setPickupLocation(pickupLocation);
 
         List<OrderItem> orderItems = new ArrayList<>();

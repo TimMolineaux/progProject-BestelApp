@@ -18,8 +18,8 @@ import java.util.List;
 @RequestMapping("/orders")
 public class OrderViewController {
 
-    private OrderDAO orderDAO;
-    private ProductDAO productDAO;
+    private final OrderDAO orderDAO;
+    private final ProductDAO productDAO;
 
     public OrderViewController(OrderDAO orderDAO, ProductDAO productDAO) {
         this.orderDAO = orderDAO;
@@ -29,9 +29,12 @@ public class OrderViewController {
     @GetMapping
     public String showOrders(Model model) {
         List<Order> alleOrders = orderDAO.findAllWithItemsAndProducts();
+
+        // Filter alleen "pending" bestellingen
         List<Order> openOrders = alleOrders.stream()
-                .filter(order -> !order.isStatus())
+                .filter(order -> "pending".equals(order.getStatus()))
                 .toList();
+
         model.addAttribute("orders", openOrders);
         return "bestellingsbeheer";
     }
@@ -45,18 +48,15 @@ public class OrderViewController {
             return "redirect:/orders";
         }
 
-        if (order.isStatus()) {
+        if ("complete".equals(order.getStatus())) {
             redirectAttributes.addFlashAttribute("errorMessage", "Bestelling is al voltooid.");
             return "redirect:/orders";
         }
 
-        // Voorraad verminderen
         boolean voorraadTekort = false;
         for (var item : order.getOrderItems()) {
             Product product = item.getProduct();
-            int nieuweVoorraad = product.getStock() - item.getQuantity();
-
-            if (nieuweVoorraad < 0) {
+            if (product.getStock() < item.getQuantity()) {
                 voorraadTekort = true;
                 break;
             }
@@ -67,29 +67,32 @@ public class OrderViewController {
             return "redirect:/orders";
         }
 
-        // Als er genoeg voorraad is, verminderen en opslaan
         for (var item : order.getOrderItems()) {
             Product product = item.getProduct();
             product.setStock(product.getStock() - item.getQuantity());
             productDAO.save(product);
         }
 
-        // Bestelling als voltooid markeren
-        order.setStatus(true);
+        order.setStatus("complete");
         orderDAO.save(order);
 
-        redirectAttributes.addFlashAttribute("successMessage", "Bestelling succesvol gemarkeerd als voltooid en voorraad aangepast.");
+        redirectAttributes.addFlashAttribute("successMessage", "Bestelling gemarkeerd als voltooid en voorraad aangepast.");
         return "redirect:/orders";
     }
 
     @PostMapping("/cancel/{id}")
     public String cancelOrder(@PathVariable int id, RedirectAttributes redirectAttributes) {
-        try {
-            orderDAO.deleteById(id);
-            redirectAttributes.addFlashAttribute("successMessage", "Bestelling succesvol geannuleerd.");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Fout bij annuleren van bestelling.");
+        Order order = orderDAO.findById(id).orElse(null);
+
+        if (order == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Bestelling niet gevonden.");
+            return "redirect:/orders";
         }
+
+        order.setStatus("cancelled");
+        orderDAO.save(order);
+
+        redirectAttributes.addFlashAttribute("successMessage", "Bestelling geannuleerd.");
         return "redirect:/orders";
     }
 }

@@ -770,3 +770,9 @@ main {
     border-radius: 10px;
     width: 400px;
 }
+
+.active-category {
+    font-weight: bold;
+    color: darkred;
+    text-decoration: underline;
+}

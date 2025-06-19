@@ -9,4 +9,9 @@ public interface ProductDAO extends JpaRepository<Product, Integer> {
     List<Product> findByNameContainingIgnoreCase(String name);
     List<Product> findByCategoryId(int categoryId);
     List<Product> findTop6ByOrderByTimesOrderedDesc();
+
+    List<Product> findByArchivedFalse();
+    List<Product> findByCategoryIdAndArchivedFalse(Integer categoryId);
+    List<Product> findByNameContainingIgnoreCaseAndArchivedFalse(String name);
+    List<Product> findTop6ByArchivedFalseOrderByTimesOrderedDesc();
 }

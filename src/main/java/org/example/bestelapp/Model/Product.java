@@ -25,15 +25,18 @@ public class Product {
 
     private String image;
 
+    @Column(nullable = false)
+    private boolean archived = false;
+
     public Product() {}
 
-    public Product(int id, String name, Category category, int stock, int timesOrdered, String image) {
-        this.id = id;
+    public Product(String name, Category category, int stock, int timesOrdered) {
         this.name = name;
         this.category = category;
         this.stock = stock;
         this.timesOrdered = timesOrdered;
-        this.image = image;
+        this.archived = false;
+        this.image = null;
     }
 
     public int getId() {
@@ -78,6 +81,14 @@ public class Product {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
     }
 
 }

@@ -6,7 +6,6 @@
   <link rel="stylesheet" th:href="@{/css/style.css}">
   <link rel="stylesheet" th:href="@{/css/navbar.css}">
 </head>
-<body>
 <body class="bestellingsbeheer">
 
 <div th:replace="fragments/navbar :: navbar"></div>
@@ -25,7 +24,14 @@
   &nbsp;&nbsp;
   <span th:text="${order.date != null} ? ${#temporals.format(order.date, 'dd-MM-yyyy')} : ''"></span>
   &nbsp;&nbsp;
-  <span>Status: <strong th:text="${order.status ? 'Voltooid' : 'In behandeling'}"></strong></span>
+  <span>Status:
+    <strong th:switch="${order.status}">
+      <span th:case="'complete'">Voltooid</span>
+      <span th:case="'pending'">In behandeling</span>
+      <span th:case="'cancelled'">Geannuleerd</span>
+      <span th:case="*">Onbekend</span>
+    </strong>
+  </span>
   &nbsp;&nbsp;
   <span>Afhaallocatie: <strong th:text="${order.pickupLocation != null && order.pickupLocation != '' ? order.pickupLocation : 'Niet ingesteld'}"></strong></span>
 
@@ -44,11 +50,12 @@
     </tbody>
   </table>
 
-  <form th:action="@{/orders/complete/{id}(id=${order.id})}" method="post" style="margin-top: 10px;" th:if="${!order.status}">
+  <!-- Alleen tonen als de status "pending" is -->
+  <form th:if="${order.status == 'pending'}" th:action="@{/orders/complete/{id}(id=${order.id})}" method="post" style="margin-top: 10px;">
     <button type="submit" class="btn-primary">Markeer als voltooid</button>
   </form>
 
-  <form th:action="@{/orders/cancel/{id}(id=${order.id})}" method="post" style="margin-top: 5px;" th:if="${!order.status}">
+  <form th:if="${order.status == 'pending'}" th:action="@{/orders/cancel/{id}(id=${order.id})}" method="post" style="margin-top: 5px;">
     <button type="submit" class="btn-danger" onclick="return confirm('Weet je zeker dat je deze bestelling wilt annuleren?');">Annuleer bestelling</button>
   </form>
 </div>

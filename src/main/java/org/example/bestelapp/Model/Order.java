@@ -12,36 +12,36 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     private LocalDate date;
 
     private String pickupLocation;
 
+    private String status;
+
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    private boolean status;
-
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     public Order() {}
 
-    public Order(int id, LocalDate date, User user, boolean status, List<OrderItem> orderItems) {
+    public Order(Integer id, LocalDate date, String pickupLocation, String status, User user, List<OrderItem> orderItems) {
         this.id = id;
         this.date = date;
-        this.user = user;
+        this.pickupLocation = pickupLocation;
         this.status = status;
+        this.user = user;
         this.orderItems = orderItems;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -53,6 +53,22 @@ public class Order {
         this.date = date;
     }
 
+    public String getPickupLocation() {
+        return pickupLocation;
+    }
+
+    public void setPickupLocation(String pickupLocation) {
+        this.pickupLocation = pickupLocation;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public User getUser() {
         return user;
     }
@@ -61,25 +77,11 @@ public class Order {
         this.user = user;
     }
 
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
-    }
-
     public List<OrderItem> getOrderItems() {
         return orderItems;
     }
 
     public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
-    }
-    public String getPickupLocation() {
-        return pickupLocation;
-    }
-    public void setPickupLocation(String pickupLocation) {
-        this.pickupLocation = pickupLocation;
     }
 }

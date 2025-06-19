@@ -1,5 +1,6 @@
 package org.example.bestelapp.Controller;
 
+import org.example.bestelapp.Model.OrderItem;
 import org.example.bestelapp.Repository.CategoryDAO;
 import org.example.bestelapp.Repository.OrderItemDAO;
 import org.springframework.ui.Model;
@@ -42,7 +43,7 @@ public class StockController {
         var productenPerCategorie = new java.util.LinkedHashMap<String, List<Product>>();
         categoryDAO.findAll().forEach(cat -> {
             var perCategorie = producten.stream()
-                    .filter(p -> p.getCategory().getId() == cat.getId())
+                    .filter(p -> !p.isArchived() && p.getCategory().getId() == cat.getId())
                     .toList();
             if (!perCategorie.isEmpty()) {
                 productenPerCategorie.put(cat.getName(), perCategorie);
@@ -62,16 +63,25 @@ public class StockController {
     public String removeProduct(@PathVariable int id, RedirectAttributes redirectAttributes) {
         Product product = productDAO.findById(id).orElse(null);
 
-        if (product != null && !orderItemDAO.findByProduct(product).isEmpty()) {
-            redirectAttributes.addFlashAttribute("deleteError", "Product kan niet verwijderd worden: het is nog gekoppeld aan een bestelling.");
+        if (product == null) {
+            redirectAttributes.addFlashAttribute("deleteError", "Product niet gevonden.");
             return "redirect:/stock";
         }
 
-        if (product != null) {
-            productDAO.delete(product);
-            redirectAttributes.addFlashAttribute("deleteSuccess", "Product succesvol verwijderd.");
+        List<OrderItem> items = orderItemDAO.findByProduct(product);
+
+        boolean inPendingOrder = items.stream()
+                .anyMatch(item -> "pending".equalsIgnoreCase(item.getOrder().getStatus()));
+
+        if (inPendingOrder) {
+            redirectAttributes.addFlashAttribute("deleteError", "Product kan niet verwijderd worden: het zit nog in een lopende bestelling.");
+            return "redirect:/stock";
         }
 
+        product.setArchived(true);
+        productDAO.save(product);
+
+        redirectAttributes.addFlashAttribute("deleteSuccess", "Product succesvol gearchiveerd.");
         return "redirect:/stock";
     }
 
